@@ -12,6 +12,10 @@
         Name:           Date:           Description:
         TBomer          03/26/2023      Initial creation.
 ------------------------------------------------------------------- */
+#include <iostream>
+#include <string>
+#include <fstream>
+using namespace std;
 
 #pragma once
 class Sale {
