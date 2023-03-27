@@ -15,9 +15,23 @@
 
 
 #include <iostream>
+#include <string>
+#include <fstream>
+
+
+#include "Client.h"
 
 using namespace std;
 
-int main() {
-    std::cout << "Hello World!";
+
+int main(int argc, char** argv) {
+    Global::SetCurrentDirectory(argv);
+
+
+    Client::InitializeDatabase();
+    Client::LoadClients();
+    Client::PrintClientList();
+
+
+    cout << endl << endl; // Adding some buffer to end out program output.
 }

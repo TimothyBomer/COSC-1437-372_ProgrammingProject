@@ -15,16 +15,36 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <vector>
+#include <iomanip>
+
+#include <windows.h>
+#include "Global.h";
 using namespace std;
 
 #pragma once
 class Client {
     public:
-        // [TBomer] Default constructor
         Client();
+        void SetName(string n);
+        void SetAddress(string a);
+        void SetSalesToDate(int s);
+        
+        static void InitializeDatabase();
+        static void LoadClients();
+        static void PrintClientList();
+        static Client BuildFromString(string s);
+
+        // [TBomer] Constants. This holds the location of the Clients.db file
+        static const string CLIENT_FILE;
+
+        static vector<Client> clients;
 
     private:
         string Name;
         string Address;
-};
+        int SalesToDate;
+        static bool isDBInitialized;
 
+
+};
