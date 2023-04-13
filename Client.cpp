@@ -22,8 +22,6 @@ bool Client::isDBInitialized = false;
 vector<Client> Client::clients;
 
 
-
-
 // [TBomer] Default constructor
 Client::Client() {
     Name = "UNKNOWN";
