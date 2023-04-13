@@ -47,9 +47,13 @@ class Client {
         void SetName(string n);
         void SetAddress(string a);
         void SetSalesToDate(int s);
+        void SetPhoneNumber(string p);
+        void SetEmail(string e);
         string GetName();
         string GetAddress();
         int GetSalesToDate();
+        string GetPhoneNumber();
+        string GetEmail();
 
         // [TBomer] Mutators
         void AddClient();
@@ -69,6 +73,8 @@ class Client {
         string Name;
         string Address;
         int SalesToDate;
+        string PhoneNumber;
+        string Email;
         static bool isDBInitialized;
 
         // [TBomer] When loading a client by name, the dbString property holds the content of the database line for the client.

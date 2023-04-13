@@ -42,6 +42,14 @@ void Client::SetSalesToDate(int s) {
     SalesToDate = s;
 }
 
+void Client::SetPhoneNumber(string pNum) {
+    PhoneNumber = pNum;
+}
+
+void Client::SetEmail(string e) {
+    Email = e;
+}
+
 string Client::GetName() {
     return Name;
 }
@@ -52,6 +60,14 @@ string Client::GetAddress() {
 
 int Client::GetSalesToDate() {
     return SalesToDate;
+}
+
+string Client::GetPhoneNumber() {
+    return PhoneNumber;
+}
+
+string Client::GetEmail() {
+    return Email;
 }
 
 void Client::SetDBString(string dbStr) {
@@ -78,6 +94,10 @@ Client Client::BuildFromString(string Line) {
             c.SetName(curr);
         } else if (linePosition == 2) {
             c.SetAddress(curr);
+        } else if (linePosition == 3) {
+            c.SetPhoneNumber(curr);
+        } else if (linePosition == 4) {
+            c.SetEmail(curr);
         }
         linePosition++;
     }
@@ -100,10 +120,19 @@ void Client::AddClient() {
     } else {
         if (!Name.empty()) {
             if (!Address.empty()) {
-                if (SalesToDate != NULL) {
-                    _clientDB << Name << "\t" << Address << "\t" << SalesToDate << "\n";
+                if (!PhoneNumber.empty()) {
+                    if (!Email.empty()) {
+                        if (SalesToDate != NULL) {
+                            _clientDB << Name << "\t" << Address << "\t" << PhoneNumber << "\t" << Email << "\t" << SalesToDate << "\n";
+                            cout << "Client added." << endl;
+                        } else {
+                            cout << "Error adding client: Sales to Date is NULL." << endl;
+                        }
+                    } else {
+                        cout << "Error adding client: Email address is empty." << endl;
+                    }
                 } else {
-                    cout << "Error adding client: Sales to Date is NULL." << endl;
+                    cout << "Error adding client: Phone number is empty." << endl;
                 }
             } else {
                 cout << "Error adding client: Address is empty." << endl;
@@ -180,8 +209,10 @@ void Client::PrintSingleClient(string pName) {
     cout << "===== Arbor Eight | Customer: " << pName << " =====" << endl << endl;
     cout << left << setw(21) << "Name";
     cout << left << setw(16) << "Sales to Date";
+    cout << left << setw(16) << "Phone Number";
+    cout << left << setw(35) << "Email";
     cout << left << setw(30) << "Address" << endl;
-    cout << setw(64) << setfill('-') << "" << setfill(' ');
+    cout << setw(132) << setfill('-') << "" << setfill(' ');
     cout << endl;
 
     for (unsigned int i = 0; i < Client::clients.size(); i++) {
@@ -189,6 +220,10 @@ void Client::PrintSingleClient(string pName) {
             cout << left << setw(18) << Client::clients[i].Name;
             cout << " | ";
             cout << right << setw(13) << Client::clients[i].SalesToDate;
+            cout << " | ";
+            cout << left << setw(13) << Client::clients[i].PhoneNumber;
+            cout << " | ";
+            cout << left << setw(32) << Client::clients[i].Email;
             cout << " | ";
             cout << left << setw(35) << Client::clients[i].Address;
         }
@@ -202,6 +237,8 @@ Client Client::LoadSingleClient(string pName) {
         if (Client::clients[i].Name == pName) {            
             c.SetName(Client::clients[i].Name);
             c.SetAddress(Client::clients[i].Address);
+            c.SetPhoneNumber(Client::clients[i].PhoneNumber);
+            c.SetEmail(Client::clients[i].Email);
             c.SetSalesToDate(Client::clients[i].SalesToDate);
         }
     }
