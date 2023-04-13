@@ -45,7 +45,7 @@ public:
     void SetName(string n);
     void SetAddress(string a);
     void SetSalesToDate(int s);
-    string GetName();
+    string GetName(); 
     string GetAddress();
     int GetSalesToDate();
 
