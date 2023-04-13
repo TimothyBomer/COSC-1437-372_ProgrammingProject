@@ -21,6 +21,7 @@
 
 #include "Client.h"
 #include "SalesRep.h"
+#include "Product.h"
 
 using namespace std;
 
