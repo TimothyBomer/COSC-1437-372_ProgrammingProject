@@ -11,12 +11,17 @@
     Revision History:
         Name:           Date:           Description:
         TBomer          03/26/2023      Initial creation.
+        TBomer          04/12/2023      Completed client class.
 ------------------------------------------------------------------- */
 #include "Client.h"
 
+// [TBomer] Initialize static properties
 const string Client::CLIENT_FILE = "Clients.db";
+string Client::CLIENT_DATABASE_PATH = "";
 bool Client::isDBInitialized = false;
 vector<Client> Client::clients;
+
+
 
 
 // [TBomer] Default constructor
@@ -26,6 +31,7 @@ Client::Client() {
     SalesToDate = 0;
 }
 
+// [TBomer] Getters and Setters
 void Client::SetName(string n) {
     Name = n;
 }
@@ -58,6 +64,8 @@ string Client::GetDBString() {
     return dbString;
 }
 
+
+// [TBomer] Build client object from tab-delimited string.
 Client Client::BuildFromString(string Line) {
     const string delimeter = "\t";
     size_t pos = 0;
@@ -65,16 +73,12 @@ Client Client::BuildFromString(string Line) {
     int linePosition = 1;
 
     Client c = Client();
-
     while ((pos = Line.find(delimeter)) != string::npos) {
         curr = Line.substr(0, pos);
         Line.erase(0, pos + delimeter.length());
-
-
         if (linePosition == 1) {
             c.SetName(curr);
-        }
-        else if (linePosition == 2) {
+        } else if (linePosition == 2) {
             c.SetAddress(curr);
         }
         linePosition++;
@@ -84,22 +88,15 @@ Client Client::BuildFromString(string Line) {
             throw std::invalid_argument("Unsupported controller type.");
         }
         c.SetSalesToDate(stoi(Line));
-        
     } catch (invalid_argument e) {
         cout << "Warning: Invalid argument passed to stoi in Client::BuildFromString(). Argument Passed: " << Line << endl;
     }
-    
-
     return c;
 }
 
+// [TBomer] Creates a new client.
 void Client::AddClient() {
-    string tempGlobal = Global::CURRENT_DIR;
-    string DatabaseDirectory = tempGlobal.append("\Database");
-    string dbTemp = DatabaseDirectory;
-    string ClientDatabase = dbTemp.append("\\").append(CLIENT_FILE);
-    ofstream _clientDB(ClientDatabase, ios::app);
-
+    ofstream _clientDB(Client::CLIENT_DATABASE_PATH, ios::app);
     if (!_clientDB) {
         cout << "Unable to open client database.";
     } else {
@@ -121,15 +118,11 @@ void Client::AddClient() {
     }
 }
 
+// [TBomer] Update DB to use most recent client data.
+//              removes old entry and creates a new one.
 void Client::SaveClientUpdates() {
-    string tempGlobal = Global::CURRENT_DIR;
-    string DatabaseDirectory = tempGlobal.append("\Database");
-    string dbTemp = DatabaseDirectory;
-    string ClientDatabase = dbTemp.append("\\").append(CLIENT_FILE);
-
     bool ClientFound = false;
-
-    ifstream _clientDB(ClientDatabase);
+    ifstream _clientDB(Client::CLIENT_DATABASE_PATH, ios::app);
     string line;
     if (_clientDB.is_open()) {
         while (getline(_clientDB, line)) {
@@ -140,7 +133,7 @@ void Client::SaveClientUpdates() {
             }
         }
         _clientDB.close();
-        Global::EraseLineFromFile(ClientDatabase, line);
+        Global::EraseLineFromFile(Client::CLIENT_DATABASE_PATH, line);
         AddClient();
     }
     else {
@@ -148,15 +141,14 @@ void Client::SaveClientUpdates() {
     } 
 }
 
-
-
-
-
+// [TBomer] Initializes the client DB for usage.
+//              Creates the database and directory if needed.
 void Client::InitializeDatabase() {
     string tempGlobal = Global::CURRENT_DIR;
     string DatabaseDirectory = tempGlobal.append("\Database");
     string dbTemp = DatabaseDirectory;
     string ClientDatabase = dbTemp.append("\\").append(CLIENT_FILE);
+    Client::CLIENT_DATABASE_PATH = ClientDatabase;
 
     if (!Global::file_exists(ClientDatabase)) {
         wstring stemp = wstring(DatabaseDirectory.begin(), DatabaseDirectory.end());
@@ -164,19 +156,14 @@ void Client::InitializeDatabase() {
         CreateDirectory(sw, NULL);
         ofstream _clientDBCreate(ClientDatabase);
         _clientDBCreate.close();
-    } 
+    }
 
     Client::isDBInitialized = true;
 }
 
-
+// [TBomer] Populates the clients array from DB.
 void Client::LoadClients() {
-    string tempGlobal = Global::CURRENT_DIR;
-    string DatabaseDirectory = tempGlobal.append("\Database");
-    string dbTemp = DatabaseDirectory;
-    string ClientDatabase = dbTemp.append("\\").append(CLIENT_FILE);
-
-    ifstream _clientDB(ClientDatabase);
+    ifstream _clientDB(Client::CLIENT_DATABASE_PATH);
     string line;
     if (_clientDB.is_open()) {
         while (getline(_clientDB, line)) {
@@ -190,6 +177,7 @@ void Client::LoadClients() {
     }
 }
 
+// [TBomer] Prints the output for a single client
 void Client::PrintSingleClient(string pName) {
     cout << "===== Arbor Eight | Customer: " << pName << " =====" << endl << endl;
     cout << left << setw(21) << "Name";
@@ -209,6 +197,7 @@ void Client::PrintSingleClient(string pName) {
     }
 }
 
+// [TBomer] Loads a single client from the DB and returns a new Client object.
 Client Client::LoadSingleClient(string pName) {
     Client c = Client();
     for (unsigned int i = 0; i < Client::clients.size(); i++) {
@@ -221,6 +210,7 @@ Client Client::LoadSingleClient(string pName) {
     return c;
 }
 
+// [TBomer] Prints a formatted client list.
 void Client::PrintClientList() {
     cout << "===== Arbor Eight, Client List =====" << endl << endl;
     cout << left << setw(21) << "Name";
