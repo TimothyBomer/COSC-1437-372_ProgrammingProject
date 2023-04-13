@@ -7,7 +7,7 @@ Details
 
 Assignments
 - Test Program: TBomer
-- Customers/Clients: TBomer
+- ~~Customers/Clients~~: TBomer
 - Sales Reps: TBomer
 - Product: JKantara
 - Sales: ALogan
@@ -26,13 +26,13 @@ Requirements:
   - - ~~Save updated client information to file~~
   
   - **Sales Representatives**
-  - - Read salesRep information from a file
-  - - List all your current salesRep -- name, short address & sales to date
+  - - ~~Read salesRep information from a file~~
+  - - ~~List all your current salesRep -- name, short address & sales to date~~
   - - List all information for a specific salesRep including monthly sales
-  - - Add a new salesRep
-  - - Update salesRep information
+  - - ~~Add a new salesRep~~
+  - - ~~Update salesRep information~~
   - - Calculate Sales Bonus based on sales that year.
-  - - Save updated salesRep information to file
+  - - ~~Save updated salesRep information to file~~
   
   - **Product/Service**
   - - Read Product/Service List in from a file
