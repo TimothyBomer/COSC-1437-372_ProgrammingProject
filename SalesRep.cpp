@@ -38,6 +38,14 @@ void SalesRep::SetAddress(string a) {
     Address = a;
 }
 
+void SalesRep::SetPhoneNumber(string pNum) {
+    PhoneNumber = pNum;
+}
+
+void SalesRep::SetEmail(string e) {
+    Email = e;
+}
+
 void SalesRep::SetSalesToDate(int s) {
     SalesToDate = s;
 }
@@ -48,6 +56,14 @@ string SalesRep::GetName() {
 
 string SalesRep::GetAddress() {
     return Address;
+}
+
+string SalesRep::GetPhoneNumber() {
+    return PhoneNumber;
+}
+
+string SalesRep::GetEmail() {
+    return Email;
 }
 
 int SalesRep::GetSalesToDate() {
@@ -76,9 +92,12 @@ SalesRep SalesRep::BuildFromString(string Line) {
         Line.erase(0, pos + delimeter.length());
         if (linePosition == 1) {
             sr.SetName(curr);
-        }
-        else if (linePosition == 2) {
+        } else if (linePosition == 2) {
             sr.SetAddress(curr);
+        } else if (linePosition == 3) {
+            sr.SetPhoneNumber(curr);
+        } else if (linePosition == 4) {
+            sr.SetEmail(curr);
         }
         linePosition++;
     }
@@ -103,11 +122,18 @@ void SalesRep::AddSalesRep() {
     else {
         if (!Name.empty()) {
             if (!Address.empty()) {
-                if (SalesToDate != NULL) {
-                    _salesRepDB << Name << "\t" << Address << "\t" << SalesToDate << "\n";
-                }
-                else {
-                    cout << "Error adding sales rep: Sales to Date is NULL." << endl;
+                if (!PhoneNumber.empty()) {
+                    if (!Email.empty()) {
+                        if (SalesToDate != NULL) {
+                            _salesRepDB << Name << "\t" << Address << "\t" << PhoneNumber << "\t" << Email << "\t" << SalesToDate << "\n";
+                        } else {
+                            cout << "Error adding sales rep: Sales to Date is NULL." << endl;
+                        }
+                    } else {
+                        cout << "Error adding sales rep: email is empty." << endl;
+                    }
+                } else {
+                    cout << "Error adding sales rep: phone number is empty." << endl;
                 }
             }
             else {
@@ -186,8 +212,10 @@ void SalesRep::PrintSingleSalesRep(string pName) {
     cout << "===== Arbor Eight | Sales Rep: " << pName << " =====" << endl << endl;
     cout << left << setw(21) << "Name";
     cout << left << setw(16) << "Sales to Date";
+    cout << left << setw(16) << "Phone Number";
+    cout << left << setw(35) << "Email";
     cout << left << setw(30) << "Address" << endl;
-    cout << setw(64) << setfill('-') << "" << setfill(' ');
+    cout << setw(132) << setfill('-') << "" << setfill(' ');
     cout << endl;
 
     for (unsigned int i = 0; i < SalesRep::salesReps.size(); i++) {
@@ -196,6 +224,10 @@ void SalesRep::PrintSingleSalesRep(string pName) {
             cout << " | ";
             cout << right << setw(13) << SalesRep::salesReps[i].SalesToDate;
             cout << " | ";
+            cout << left << setw(13) << SalesRep::salesReps[i].PhoneNumber;
+            cout << " | ";
+            cout << left << setw(32) << SalesRep::salesReps[i].Email;
+            cout << " | ";
             cout << left << setw(35) << SalesRep::salesReps[i].Address;
         }
     }
@@ -203,15 +235,17 @@ void SalesRep::PrintSingleSalesRep(string pName) {
 
 // [TBomer] Loads a single sales rep from the DB and returns a new SalesRep object.
 SalesRep SalesRep::LoadSingleSalesRep(string pName) {
-    SalesRep c = SalesRep();
+    SalesRep sr = SalesRep();
     for (unsigned int i = 0; i < SalesRep::salesReps.size(); i++) {
         if (SalesRep::salesReps[i].Name == pName) {
-            c.SetName(SalesRep::salesReps[i].Name);
-            c.SetAddress(SalesRep::salesReps[i].Address);
-            c.SetSalesToDate(SalesRep::salesReps[i].SalesToDate);
+            sr.SetName(SalesRep::salesReps[i].Name);
+            sr.SetAddress(SalesRep::salesReps[i].Address);
+            sr.SetPhoneNumber(SalesRep::salesReps[i].PhoneNumber);
+            sr.SetEmail(SalesRep::salesReps[i].Email);
+            sr.SetSalesToDate(SalesRep::salesReps[i].SalesToDate);
         }
     }
-    return c;
+    return sr;
 }
 
 // [TBomer] Prints a formatted sales rep list.

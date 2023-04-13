@@ -35,9 +35,13 @@ class SalesRep {
         // Getters and Setters
         void SetName(string n);
         void SetAddress(string a);
+        void SetPhoneNumber(string p);
+        void SetEmail(string e);
         void SetSalesToDate(int s);
         string GetName();
         string GetAddress();
+        string GetPhoneNumber();
+        string GetEmail();
         int GetSalesToDate();
 
         // [TBomer] Mutators
@@ -57,6 +61,8 @@ class SalesRep {
     private:
         string Name;
         string Address;
+        string PhoneNumber;
+        string Email;
         int SalesToDate;
         static bool isDBInitialized;
 
