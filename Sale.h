@@ -42,14 +42,24 @@ public:
     Sale();
 
     // Getters and Setters
-    void SetName(string n);
-    void SetAddress(string a);
-    void SetSalesToDate(int s);
-    string GetName(); 
-    string GetAddress();
-    int GetSalesToDate();
+    void SetSaleID(int i);
+    void SetDate(string d);
+    void SetClientName(string cN);
+    void SetSalesRepName(string srN);
+    void SetProductName(string p);
+    void SetProductQty(int q);
+    void SetSubTotal(double st); // Maybe not?
+
+    int GetSaleID();
+    string GetDate();
+    string GetClientName();
+    string GetSalesRepName();
+    string GetProductName();
+    int GetProductQty();
+    double GetSubTotal();
 
     // [TBomer] Mutators
+    void GenerateSaleID();
     void AddSale();
     void SaveSaleUpdates();
 
@@ -57,16 +67,28 @@ public:
     static void InitializeDatabase();
     static void LoadSales();
     static void PrintSaleList();
-    static void PrintSingleSale(string pName);
-    static Sale LoadSingleSale(string pName);
+    static void PrintSingleSale(int SaleID);
+    static Sale LoadSingleSale(int SaleID);
     static Sale BuildFromString(string s);
+
+    static double GetAnnualSales(int y);
+    static void PrintSalesByProduct(string p);
+    static void PrintSalesByCustomer(string c);
+    static void PrintSalesBySalesRep(string sR);
 
     static vector<Sale> Sales; // [TBomer] This holds the list of Sales. Populated by the LoadSales() function call.
 
 private:
-    string Name;
-    string Address;
-    int SalesToDate;
+    int SaleID;
+    string Date;
+    string ClientName;
+    string SalesRepName;
+    string ProductName;
+    int ProductQty;
+    double SubTotal;
+
+
+
     static bool isDBInitialized;
 
     // [TBomer] When loading a Sale by name, the dbString property holds the content of the database line for the Sale.

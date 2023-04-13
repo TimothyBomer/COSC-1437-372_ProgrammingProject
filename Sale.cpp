@@ -23,34 +23,69 @@ vector<Sale> Sale::Sales;
 
 // [TBomer] Default constructor
 Sale::Sale() {
-    Name = "UNKNOWN";
-    Address = "UNKNOWN";
-    SalesToDate = 0;
+    Date = "UNKNOWN";
+    ClientName = "UNKNOWN";
+    SalesRepName = "UNKNOWN";
+    ProductName = "UNKNOWN";
+    ProductQty = 0;
+    SubTotal = 0.00;
 }
 
 // [TBomer] Getters and Setters
-void Sale::SetName(string n) {
-    Name = n;
+void Sale::SetSaleID(int id) {
+    SaleID = id;
 }
 
-void Sale::SetAddress(string a) {
-    Address = a;
+void Sale::SetDate(string d) {
+    Date = d;
 }
 
-void Sale::SetSalesToDate(int s) {
-    SalesToDate = s;
+void Sale::SetClientName(string cN) {
+    ClientName = cN;
 }
 
-string Sale::GetName() {
-    return Name;
+void Sale::SetSalesRepName(string srN) {
+    SalesRepName = srN;
 }
 
-string Sale::GetAddress() {
-    return Address;
+void Sale::SetProductName(string pN) {
+    ProductName = pN;
 }
 
-int Sale::GetSalesToDate() {
-    return SalesToDate;
+void Sale::SetProductQty(int q) {
+    ProductQty = q;
+}
+
+void Sale::SetSubTotal(double sT) {
+    SubTotal = sT;
+}
+
+int Sale::GetSaleID() {
+    return SaleID;
+}
+
+string Sale::GetDate() {
+    return Date;
+}
+
+string Sale::GetClientName() {
+    return ClientName;
+}
+
+string Sale::GetSalesRepName() {
+    return SalesRepName;
+}
+
+string Sale::GetProductName() {
+    return ProductName;
+}
+
+int Sale::GetProductQty() {
+    return ProductQty;
+}
+
+double Sale::GetSubTotal() {
+    return SubTotal;
 }
 
 void Sale::SetDBString(string dbStr) {
@@ -59,6 +94,11 @@ void Sale::SetDBString(string dbStr) {
 
 string Sale::GetDBString() {
     return dbString;
+}
+
+void Sale::GenerateSaleID() {
+    srand((unsigned)time(NULL));
+    SaleID = 10000000 + (rand() % 10000001);
 }
 
 
@@ -73,11 +113,34 @@ Sale Sale::BuildFromString(string Line) {
     while ((pos = Line.find(delimeter)) != string::npos) {
         curr = Line.substr(0, pos);
         Line.erase(0, pos + delimeter.length());
+        
         if (linePosition == 1) {
-            c.SetName(curr);
-        }
-        else if (linePosition == 2) {
-            c.SetAddress(curr);
+            try {
+                if (!Global::IsStringNumber(curr)) {
+                    throw std::invalid_argument("Unsupported controller type.");
+                }
+                c.SetSaleID(stoi(curr));
+            } catch (invalid_argument e) {
+                cout << "Warning: Invalid argument passed to stoi in Sale::BuildFromString(). Argument Passed: " << curr << endl;
+            }
+        } else if (linePosition == 2) {
+            c.SetDate(curr);
+        } else if (linePosition == 3) {
+            c.SetClientName(curr);
+        } else if (linePosition == 4) {
+            c.SetSalesRepName(curr);
+        } else if (linePosition == 5) {
+            c.SetProductName(curr);
+        } else if (linePosition == 6) {
+            try {
+                if (!Global::IsStringNumber(curr)) {
+                    throw std::invalid_argument("Unsupported controller type.");
+                }
+                curr.erase(remove_if(curr.begin(), curr.end(), ::isspace), curr.end());
+                c.SetProductQty(stoi(curr));
+            } catch (invalid_argument e) {
+                cout << "Warning: Invalid argument passed to stoi in Sale::BuildFromString(). Argument Passed: " << curr << endl;
+            }
         }
         linePosition++;
     }
@@ -85,10 +148,10 @@ Sale Sale::BuildFromString(string Line) {
         if (!Global::IsStringNumber(Line)) {
             throw std::invalid_argument("Unsupported controller type.");
         }
-        c.SetSalesToDate(stoi(Line));
+        c.SetSubTotal(stod(Line));
     }
     catch (invalid_argument e) {
-        cout << "Warning: Invalid argument passed to stoi in Sale::BuildFromString(). Argument Passed: " << Line << endl;
+        cout << "Warning: Invalid argument passed to stod in Client::BuildFromString(). Argument Passed: " << Line << endl;
     }
     return c;
 }
@@ -100,23 +163,37 @@ void Sale::AddSale() {
         cout << "Unable to open Sale database.";
     }
     else {
-        if (!Name.empty()) {
-            if (!Address.empty()) {
-                if (SalesToDate != NULL) {
-                    _SaleDB << Name << "\t" << Address << "\t" << SalesToDate << "\n";
-                }
-                else {
-                    cout << "Error adding Sale: Sales to Date is NULL." << endl;
-                }
-            }
-            else {
-                cout << "Error adding Sale: Address is empty." << endl;
-            }
-        }
-        else {
-            cout << "Error adding Sale: Name is empty." << endl;
-        }
+        
 
+        if (SaleID != NULL) {
+            if (!Date.empty()) {
+                if (!ClientName.empty()) {
+                    if (!SalesRepName.empty()) {
+                        if (!ProductName.empty()) {
+                            if (ProductQty != NULL) {
+                                if (SubTotal != NULL) {
+                                    _SaleDB << SaleID << "\t" << Date << "\t" << ClientName << "\t" << SalesRepName << "\t" << ProductName << "\t" << ProductQty << "\t" << SubTotal << "\n";
+                                } else {
+                                    cout << "Error adding Sale: Sub Total is NULL." << endl;
+                                }
+                            } else {
+                                cout << "Error adding Sale: Product quantity is NULL." << endl;
+                            }
+                        } else {
+                            cout << "Error adding Sale: Product name is empty.." << endl;
+                        }
+                    } else {
+                        cout << "Error adding Sale: Sales Rep name is empty.." << endl;
+                    }
+                } else {
+                    cout << "Error adding Sale: Client name is empty." << endl;
+                }
+            } else {
+                cout << "Error adding Sale: Date is empty." << endl;
+            }
+        } else {
+            cout << "Error adding Sale: Sale ID is NULL." << endl;
+        }
         _SaleDB.close();
     }
 }
@@ -130,7 +207,7 @@ void Sale::SaveSaleUpdates() {
     if (_SaleDB.is_open()) {
         while (getline(_SaleDB, line)) {
             Sale c = Sale::BuildFromString(line);
-            if (c.Name == Name) {
+            if (c.SaleID == SaleID) {
                 SaleFound = true;
                 break;
             }
@@ -181,33 +258,52 @@ void Sale::LoadSales() {
 }
 
 // [TBomer] Prints the output for a single Sale
-void Sale::PrintSingleSale(string pName) {
-    cout << "===== Arbor Eight | Customer: " << pName << " =====" << endl << endl;
-    cout << left << setw(21) << "Name";
-    cout << left << setw(16) << "Sales to Date";
-    cout << left << setw(30) << "Address" << endl;
-    cout << setw(64) << setfill('-') << "" << setfill(' ');
+void Sale::PrintSingleSale(int SaleID) {
+    cout << "===== Arbor Eight | Sale: " << SaleID << " =====" << endl << endl;
+    cout << left << setw(15) << "Sale ID";
+    cout << left << setw(21) << "Date of Sale";
+    cout << left << setw(21) << "Client";
+    cout << left << setw(21) << "Sales Rep";
+    cout << left << setw(21) << "Product";
+    cout << left << setw(12) << "Quantity";
+    cout << left << setw(9) << "Sub Total" << endl;
+    cout << setw(140) << setfill('-') << "" << setfill(' ');
     cout << endl;
 
     for (unsigned int i = 0; i < Sale::Sales.size(); i++) {
-        if (Sale::Sales[i].Name == pName) {
-            cout << left << setw(18) << Sale::Sales[i].Name;
+        if (Sale::Sales[i].SaleID == SaleID) {
+            cout << left << setw(12) << Sale::Sales[i].SaleID;
             cout << " | ";
-            cout << right << setw(13) << Sale::Sales[i].SalesToDate;
+            cout << left << setw(18) << Sale::Sales[i].Date;
             cout << " | ";
-            cout << left << setw(35) << Sale::Sales[i].Address;
+            cout << right << setw(18) << Sale::Sales[i].ClientName;
+            cout << " | ";
+            cout << left << setw(18) << Sale::Sales[i].SalesRepName;
+            cout << " | ";
+            cout << left << setw(18) << Sale::Sales[i].ProductName;
+            cout << " | ";
+            cout << left << setw(9) << Sale::Sales[i].ProductQty;
+            cout << " | ";
+            string t = to_string(Sale::Sales[i].SubTotal);
+            t = "$" + t;
+            t.erase(t.find_last_not_of('0') + 1, string::npos);
+            cout << left << setw(6) << t;
         }
     }
 }
 
 // [TBomer] Loads a single Sale from the DB and returns a new Sale object.
-Sale Sale::LoadSingleSale(string pName) {
+Sale Sale::LoadSingleSale(int SaleID) {
     Sale c = Sale();
     for (unsigned int i = 0; i < Sale::Sales.size(); i++) {
-        if (Sale::Sales[i].Name == pName) {
-            c.SetName(Sale::Sales[i].Name);
-            c.SetAddress(Sale::Sales[i].Address);
-            c.SetSalesToDate(Sale::Sales[i].SalesToDate);
+        if (Sale::Sales[i].SaleID == SaleID) {
+            c.SetSaleID(Sale::Sales[i].SaleID);
+            c.SetDate(Sale::Sales[i].Date);
+            c.SetClientName(Sale::Sales[i].ClientName);
+            c.SetSalesRepName(Sale::Sales[i].SalesRepName);
+            c.SetProductName(Sale::Sales[i].ProductName);
+            c.SetProductQty(Sale::Sales[i].ProductQty);
+            c.SetSubTotal(Sale::Sales[i].SubTotal);
         }
     }
     return c;
@@ -216,22 +312,162 @@ Sale Sale::LoadSingleSale(string pName) {
 // [TBomer] Prints a formatted Sale list.
 void Sale::PrintSaleList() {
     cout << "===== Arbor Eight, Sales List =====" << endl << endl;
-    cout << left << setw(21) << "Name";
-    cout << left << setw(16) << "Sales to Date";
-    cout << left << setw(30) << "Address" << endl;
-    cout << setw(64) << setfill('-') << "" << setfill(' ');
-
+    cout << left << setw(15) << "Sale ID";
+    cout << left << setw(21) << "Date of Sale";
+    cout << left << setw(21) << "Client";
+    cout << left << setw(21) << "Sales Rep";
+    cout << left << setw(21) << "Product";
+    cout << left << setw(12) << "Quantity";
+    cout << left << setw(9) << "Sub Total" << endl;
+    cout << setw(140) << setfill('-') << "" << setfill(' ');
     cout << endl;
 
     for (unsigned int i = 0; i < Sale::Sales.size(); i++) {
-        cout << left << setw(18) << Sale::Sales[i].Name;
+        cout << left << setw(12) << Sale::Sales[i].SaleID;
         cout << " | ";
-        cout << right << setw(13) << Sale::Sales[i].SalesToDate;
+        cout << left << setw(18) << Sale::Sales[i].Date;
         cout << " | ";
-        cout << left << setw(35) << Sale::Sales[i].Address;
+        cout << right << setw(18) << Sale::Sales[i].ClientName;
+        cout << " | ";
+        cout << left << setw(18) << Sale::Sales[i].SalesRepName;
+        cout << " | ";
+        cout << left << setw(18) << Sale::Sales[i].ProductName;
+        cout << " | ";
+        cout << left << setw(9) << Sale::Sales[i].ProductQty;
+        cout << " | ";
+        string t = to_string(Sale::Sales[i].SubTotal);
+        t = "$" + t;
+        t.erase(t.find_last_not_of('0') + 1, string::npos);
+        cout << left << setw(6) << t;
 
         if (i != Sale::Sales.size() - 1) {
             cout << endl;
+        }
+    }
+}
+
+
+
+double Sale::GetAnnualSales(int y) {
+    double AnnualSales = 0.00;
+    for (unsigned int i = 0; i < Sale::Sales.size(); i++) {
+
+        int saleYear = stoi(Sale::Sales[i].Date.substr(0, 8));
+        
+        if (saleYear == y) {
+            AnnualSales += Sale::Sales[i].SubTotal;
+        }
+    }
+    return AnnualSales;
+}
+
+void Sale::PrintSalesByProduct(string p) {
+    cout << "===== Arbor Eight, Sales List =====" << endl << endl;
+    cout << left << setw(15) << "Sale ID";
+    cout << left << setw(21) << "Date of Sale";
+    cout << left << setw(21) << "Client";
+    cout << left << setw(21) << "Sales Rep";
+    cout << left << setw(21) << "Product";
+    cout << left << setw(12) << "Quantity";
+    cout << left << setw(9) << "Sub Total" << endl;
+    cout << setw(140) << setfill('-') << "" << setfill(' ');
+    cout << endl;
+
+    for (unsigned int i = 0; i < Sale::Sales.size(); i++) {
+        if (Sale::Sales[i].ProductName == p) {
+            cout << left << setw(12) << Sale::Sales[i].SaleID;
+            cout << " | ";
+            cout << left << setw(18) << Sale::Sales[i].Date;
+            cout << " | ";
+            cout << right << setw(18) << Sale::Sales[i].ClientName;
+            cout << " | ";
+            cout << left << setw(18) << Sale::Sales[i].SalesRepName;
+            cout << " | ";
+            cout << left << setw(18) << Sale::Sales[i].ProductName;
+            cout << " | ";
+            cout << left << setw(9) << Sale::Sales[i].ProductQty;
+            cout << " | ";
+            string t = to_string(Sale::Sales[i].SubTotal);
+            t = "$" + t;
+            t.erase(t.find_last_not_of('0') + 1, string::npos);
+            cout << left << setw(6) << t;
+            if (i != Sale::Sales.size() - 1) {
+                cout << endl;
+            }
+        }
+    }
+}
+
+void Sale::PrintSalesByCustomer(string c) {
+    cout << "===== Arbor Eight, Sales List =====" << endl << endl;
+    cout << left << setw(15) << "Sale ID";
+    cout << left << setw(21) << "Date of Sale";
+    cout << left << setw(21) << "Client";
+    cout << left << setw(21) << "Sales Rep";
+    cout << left << setw(21) << "Product";
+    cout << left << setw(12) << "Quantity";
+    cout << left << setw(9) << "Sub Total" << endl;
+    cout << setw(140) << setfill('-') << "" << setfill(' ');
+    cout << endl;
+
+    for (unsigned int i = 0; i < Sale::Sales.size(); i++) {
+        if (Sale::Sales[i].ClientName == p) {
+            cout << left << setw(12) << Sale::Sales[i].SaleID;
+            cout << " | ";
+            cout << left << setw(18) << Sale::Sales[i].Date;
+            cout << " | ";
+            cout << right << setw(18) << Sale::Sales[i].ClientName;
+            cout << " | ";
+            cout << left << setw(18) << Sale::Sales[i].SalesRepName;
+            cout << " | ";
+            cout << left << setw(18) << Sale::Sales[i].ProductName;
+            cout << " | ";
+            cout << left << setw(9) << Sale::Sales[i].ProductQty;
+            cout << " | ";
+            string t = to_string(Sale::Sales[i].SubTotal);
+            t = "$" + t;
+            t.erase(t.find_last_not_of('0') + 1, string::npos);
+            cout << left << setw(6) << t;
+            if (i != Sale::Sales.size() - 1) {
+                cout << endl;
+            }
+        }
+    }
+}
+
+void Sale::PrintSalesBySalesRep(string sR) {
+    cout << "===== Arbor Eight, Sales List =====" << endl << endl;
+    cout << left << setw(15) << "Sale ID";
+    cout << left << setw(21) << "Date of Sale";
+    cout << left << setw(21) << "Client";
+    cout << left << setw(21) << "Sales Rep";
+    cout << left << setw(21) << "Product";
+    cout << left << setw(12) << "Quantity";
+    cout << left << setw(9) << "Sub Total" << endl;
+    cout << setw(140) << setfill('-') << "" << setfill(' ');
+    cout << endl;
+
+    for (unsigned int i = 0; i < Sale::Sales.size(); i++) {
+        if (Sale::Sales[i].SalesRepName == p) {
+            cout << left << setw(12) << Sale::Sales[i].SaleID;
+            cout << " | ";
+            cout << left << setw(18) << Sale::Sales[i].Date;
+            cout << " | ";
+            cout << right << setw(18) << Sale::Sales[i].ClientName;
+            cout << " | ";
+            cout << left << setw(18) << Sale::Sales[i].SalesRepName;
+            cout << " | ";
+            cout << left << setw(18) << Sale::Sales[i].ProductName;
+            cout << " | ";
+            cout << left << setw(9) << Sale::Sales[i].ProductQty;
+            cout << " | ";
+            string t = to_string(Sale::Sales[i].SubTotal);
+            t = "$" + t;
+            t.erase(t.find_last_not_of('0') + 1, string::npos);
+            cout << left << setw(6) << t;
+            if (i != Sale::Sales.size() - 1) {
+                cout << endl;
+            }
         }
     }
 }

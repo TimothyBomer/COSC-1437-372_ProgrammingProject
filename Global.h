@@ -15,6 +15,8 @@
         TBomer          03/26/2023      Initial creation.
         TBomer          04/12/2023      Added IsStringNumber()
                                         Added EraseLineFromFile()
+        TBomer          04/13/2023      Allowed the usage of doubles
+                                            in IsStringNumber()
 ------------------------------------------------------------------- */
 #include <iostream>
 #include <string>
@@ -44,7 +46,7 @@ class Global {
         //              useful for error handling.
         static bool IsStringNumber(const std::string& s) {
             std::string::const_iterator it = s.begin();
-            while (it != s.end() && std::isdigit(*it)) ++it;
+            while (it != s.end() && (std::isdigit(*it) || *it == '.')) ++it;
             return !s.empty() && it == s.end();
         }
 

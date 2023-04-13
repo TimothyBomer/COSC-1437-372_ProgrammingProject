@@ -44,12 +44,13 @@ Requirements:
   - - Save updated Product/Services information to file
   
   - **Sales**
-  - - Read Sales History from a file
-  - - Allow client to purchase a Product/Service
-  - - List all your sales for the year
-  - - List all sales for the year from a specific client
-  - - Update the information for a specific sale.
-  - - Save updated Sales History to file
+  - - ~~Read Sales History from a file~~
+  - - ~~Allow client to purchase a Product/Service~~
+  - - ~~List all your sales for the year~~
+  - - ~~List all sales for the year from a specific client~~
+  - - ~~List all sales for the year from a specific sales rep~~
+  - - ~~Update the information for a specific sale.~~
+  - - ~~Save updated Sales History to file~~
   
   - **Main Program**
   - - Main Program needs to test all the classes and class functions,
