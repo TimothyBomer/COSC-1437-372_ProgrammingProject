@@ -47,6 +47,7 @@ class SalesRep {
         // [TBomer] Mutators
         void AddSalesRep();
         void SaveSalesRepUpdates();
+        double CalculateBonus(double s);
 
         // [TBomer] Static Functions
         static void InitializeDatabase();

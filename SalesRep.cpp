@@ -171,6 +171,11 @@ void SalesRep::SaveSalesRepUpdates() {
     }
 }
 
+double SalesRep::CalculateBonus(double sales) {
+    double bonusPercentage = 0.05;
+    return sales * bonusPercentage;
+}
+
 // [TBomer] Initializes the sales rep DB for usage.
 //              Creates the sales rep and directory if needed.
 void SalesRep::InitializeDatabase() {

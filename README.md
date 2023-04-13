@@ -28,10 +28,10 @@ Requirements:
   - **Sales Representatives**
   - - ~~Read salesRep information from a file~~
   - - ~~List all your current salesRep -- name, short address & sales to date~~
-  - - List all information for a specific salesRep including monthly sales
+  - - ~~List all information for a specific salesRep including monthly sales~~
   - - ~~Add a new salesRep~~
   - - ~~Update salesRep information~~
-  - - Calculate Sales Bonus based on sales that year.
+  - - ~~Calculate Sales Bonus based on sales that year.~~
   - - ~~Save updated salesRep information to file~~
   
   - **Product/Service**
