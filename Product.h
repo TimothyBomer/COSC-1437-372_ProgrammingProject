@@ -22,6 +22,14 @@
 #include "Global.h";
 using namespace std;
 
+
+/*
+    Possible Date Properties:
+        Name
+        Price
+        Stock
+*/
+
 #pragma once
 class Product {
     public:

@@ -22,6 +22,15 @@
 #include "Global.h";
 using namespace std;
 
+/*
+    Possible data properties:
+        Client name
+        Sale date
+        product name
+        product count
+        subtotal
+*/
+
 #pragma once
 class Sale {
 public:
