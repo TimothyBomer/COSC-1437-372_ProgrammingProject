@@ -22,14 +22,6 @@
 #include "Global.h";
 using namespace std;
 
-
-/*
-    Possible Date Properties:
-        Name
-        Price
-        Stock
-*/
-
 #pragma once
 class Product {
     public:
@@ -42,11 +34,13 @@ class Product {
 
         // Getters and Setters
         void SetName(string n);
-        void SetAddress(string a);
-        void SetSalesToDate(int s);
+        void SetDescription(string d);
+        void SetPrice(double p);
+        void SetStock(int s);
         string GetName();
-        string GetAddress();
-        int GetSalesToDate();
+        string GetDescription();
+        double GetPrice();
+        int GetStock();
 
         // [TBomer] Mutators
         void AddProduct();
@@ -64,8 +58,9 @@ class Product {
 
     private:
         string Name;
-        string Address;
-        int SalesToDate;
+        string Description;
+        double Price;
+        int Stock;
         static bool isDBInitialized;
 
         // [TBomer] When loading a Product by name, the dbString property holds the content of the database line for the Product.

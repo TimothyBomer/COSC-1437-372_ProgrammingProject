@@ -411,7 +411,7 @@ void Sale::PrintSalesByCustomer(string c) {
     cout << endl;
 
     for (unsigned int i = 0; i < Sale::Sales.size(); i++) {
-        if (Sale::Sales[i].ClientName == p) {
+        if (Sale::Sales[i].ClientName == c) {
             cout << left << setw(12) << Sale::Sales[i].SaleID;
             cout << " | ";
             cout << left << setw(18) << Sale::Sales[i].Date;
@@ -448,7 +448,7 @@ void Sale::PrintSalesBySalesRep(string sR) {
     cout << endl;
 
     for (unsigned int i = 0; i < Sale::Sales.size(); i++) {
-        if (Sale::Sales[i].SalesRepName == p) {
+        if (Sale::Sales[i].SalesRepName == sR) {
             cout << left << setw(12) << Sale::Sales[i].SaleID;
             cout << " | ";
             cout << left << setw(18) << Sale::Sales[i].Date;

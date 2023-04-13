@@ -24,8 +24,9 @@ vector<Product> Product::Products;
 // [TBomer] Default constructor
 Product::Product() {
     Name = "UNKNOWN";
-    Address = "UNKNOWN";
-    SalesToDate = 0;
+    Description = "UNKNOWN";
+    Price = 0.00;
+    Stock = 0;
 }
 
 // [TBomer] Getters and Setters
@@ -33,24 +34,32 @@ void Product::SetName(string n) {
     Name = n;
 }
 
-void Product::SetAddress(string a) {
-    Address = a;
+void Product::SetDescription(string d) {
+    Description = d;
 }
 
-void Product::SetSalesToDate(int s) {
-    SalesToDate = s;
+void Product::SetPrice(double p) {
+    Price = p;
+}
+
+void Product::SetStock(int s) {
+    Stock = s;
 }
 
 string Product::GetName() {
     return Name;
 }
 
-string Product::GetAddress() {
-    return Address;
+string Product::GetDescription() {
+    return Description;
 }
 
-int Product::GetSalesToDate() {
-    return SalesToDate;
+int Product::GetStock() {
+    return Stock;
+}
+
+double Product::GetPrice() {
+    return Price;
 }
 
 void Product::SetDBString(string dbStr) {
@@ -75,9 +84,17 @@ Product Product::BuildFromString(string Line) {
         Line.erase(0, pos + delimeter.length());
         if (linePosition == 1) {
             c.SetName(curr);
-        }
-        else if (linePosition == 2) {
-            c.SetAddress(curr);
+        } else if (linePosition == 2) {
+            c.SetDescription(curr);
+        } else if (linePosition == 3) {
+            try {
+                if (!Global::IsStringNumber(curr)) {
+                    throw std::invalid_argument("Unsupported controller type.");
+                }
+                c.SetPrice(stod(curr));
+            } catch (invalid_argument e) {
+                cout << "Warning: Invalid argument passed to stoi in Product::BuildFromString(). Argument Passed: " << curr << endl;
+            }
         }
         linePosition++;
     }
@@ -85,9 +102,8 @@ Product Product::BuildFromString(string Line) {
         if (!Global::IsStringNumber(Line)) {
             throw std::invalid_argument("Unsupported controller type.");
         }
-        c.SetSalesToDate(stoi(Line));
-    }
-    catch (invalid_argument e) {
+        c.SetStock(stoi(Line));
+    } catch (invalid_argument e) {
         cout << "Warning: Invalid argument passed to stoi in Product::BuildFromString(). Argument Passed: " << Line << endl;
     }
     return c;
@@ -101,16 +117,20 @@ void Product::AddProduct() {
     }
     else {
         if (!Name.empty()) {
-            if (!Address.empty()) {
-                if (SalesToDate != NULL) {
-                    _ProductDB << Name << "\t" << Address << "\t" << SalesToDate << "\n";
+            if (!Description.empty()) {
+                if (Price != NULL) {
+                    if (Stock != NULL) {
+                        _ProductDB << Name << "\t" << Description << "\t" << Price << "\t" << Stock << "\n";
+                    } else {
+                        cout << "Error adding Product: Stock is NULL." << endl;
+                    }
                 }
                 else {
-                    cout << "Error adding Product: Sales to Date is NULL." << endl;
+                    cout << "Error adding Product: Price is NULL." << endl;
                 }
             }
             else {
-                cout << "Error adding Product: Address is empty." << endl;
+                cout << "Error adding Product: Description is empty." << endl;
             }
         }
         else {
@@ -182,20 +202,23 @@ void Product::LoadProducts() {
 
 // [TBomer] Prints the output for a single Product
 void Product::PrintSingleProduct(string pName) {
-    cout << "===== Arbor Eight | Customer: " << pName << " =====" << endl << endl;
+    cout << "===== Arbor Eight | Product: " << pName << " =====" << endl << endl;
     cout << left << setw(21) << "Name";
-    cout << left << setw(16) << "Sales to Date";
-    cout << left << setw(30) << "Address" << endl;
-    cout << setw(64) << setfill('-') << "" << setfill(' ');
+    cout << left << setw(28) << "Description";
+    cout << left << setw(12) << "Price";
+    cout << left << setw(12) << "Stock" << endl;
+    cout << setw(68) << setfill('-') << "" << setfill(' ');
     cout << endl;
 
     for (unsigned int i = 0; i < Product::Products.size(); i++) {
         if (Product::Products[i].Name == pName) {
             cout << left << setw(18) << Product::Products[i].Name;
             cout << " | ";
-            cout << right << setw(13) << Product::Products[i].SalesToDate;
+            cout << left << setw(25) << Product::Products[i].Description;
             cout << " | ";
-            cout << left << setw(35) << Product::Products[i].Address;
+            cout << left << setw(9) << Product::Products[i].Price;
+            cout << " | ";
+            cout << left << setw(9) << Product::Products[i].Stock;
         }
     }
 }
@@ -206,8 +229,9 @@ Product Product::LoadSingleProduct(string pName) {
     for (unsigned int i = 0; i < Product::Products.size(); i++) {
         if (Product::Products[i].Name == pName) {
             c.SetName(Product::Products[i].Name);
-            c.SetAddress(Product::Products[i].Address);
-            c.SetSalesToDate(Product::Products[i].SalesToDate);
+            c.SetDescription(Product::Products[i].Description);
+            c.SetPrice(Product::Products[i].Price);
+            c.SetStock(Product::Products[i].Stock);
         }
     }
     return c;
@@ -217,18 +241,21 @@ Product Product::LoadSingleProduct(string pName) {
 void Product::PrintProductList() {
     cout << "===== Arbor Eight, Product List =====" << endl << endl;
     cout << left << setw(21) << "Name";
-    cout << left << setw(16) << "Sales to Date";
-    cout << left << setw(30) << "Address" << endl;
-    cout << setw(64) << setfill('-') << "" << setfill(' ');
+    cout << left << setw(28) << "Description";
+    cout << left << setw(12) << "Price";
+    cout << left << setw(12) << "Stock" << endl;
+    cout << setw(68) << setfill('-') << "" << setfill(' ');
 
     cout << endl;
 
     for (unsigned int i = 0; i < Product::Products.size(); i++) {
         cout << left << setw(18) << Product::Products[i].Name;
         cout << " | ";
-        cout << right << setw(13) << Product::Products[i].SalesToDate;
+        cout << left << setw(25) << Product::Products[i].Description;
         cout << " | ";
-        cout << left << setw(35) << Product::Products[i].Address;
+        cout << left << setw(9) << Product::Products[i].Price;
+        cout << " | ";
+        cout << left << setw(9) << Product::Products[i].Stock;
 
         if (i != Product::Products.size() - 1) {
             cout << endl;

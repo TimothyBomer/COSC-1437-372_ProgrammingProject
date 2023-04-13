@@ -35,13 +35,13 @@ Requirements:
   - - ~~Save updated salesRep information to file~~
   
   - **Product/Service**
-  - - Read Product/Service List in from a file
-  - - List all your current Product/Services including current sales
-  - - List all information for a specific Product/Services
-  - - Add a new Product/Services
-  - - Update Product/Services information
+  - - ~~Read Product/Service List in from a file~~
+  - - ~~List all your current Product/Services including current sales~~
+  - - ~~List all information for a specific Product/Services~~
+  - - ~~Add a new Product/Services~~
+  - - ~~Update Product/Services information~~
   - - Produce a Monthly Sales Report of All Product/Services
-  - - Save updated Product/Services information to file
+  - - ~~Save updated Product/Services information to file~~
   
   - **Sales**
   - - ~~Read Sales History from a file~~
