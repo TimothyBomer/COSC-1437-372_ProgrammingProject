@@ -59,9 +59,46 @@ Client Client::BuildFromString(string Line) {
         }
         linePosition++;
     }
-    c.SetSalesToDate(stoi(Line));
+    try {
+        if (!Global::IsStringNumber(Line)) {
+            throw std::invalid_argument("Unsupported controller type.");
+        }
+        c.SetSalesToDate(stoi(Line));
+        
+    } catch (invalid_argument e) {
+        cout << "Warning: Invalid argument passed to stoi in Client::BuildFromString(). Argument Passed: " << Line << endl;
+    }
+    
 
     return c;
+}
+
+void Client::AddClient() {
+    string tempGlobal = Global::CURRENT_DIR;
+    string DatabaseDirectory = tempGlobal.append("\Database");
+    string dbTemp = DatabaseDirectory;
+    string ClientDatabase = dbTemp.append("\\").append(CLIENT_FILE);
+    ofstream _clientDB(ClientDatabase, ios::app);
+
+    if (!_clientDB) {
+        cout << "Unable to open client database.";
+    } else {
+        if (!Name.empty()) {
+            if (!Address.empty()) {
+                if (SalesToDate != NULL) {
+                    _clientDB << Name << "\t" << Address << "\t" << SalesToDate << "\n";
+                } else {
+                    cout << "Error adding client: Sales to Date is NULL." << endl;
+                }
+            } else {
+                cout << "Error adding client: Address is empty." << endl;
+            }
+        } else {
+            cout << "Error adding client: Name is empty." << endl;
+        }
+        
+        _clientDB.close();
+    }
 }
 
 

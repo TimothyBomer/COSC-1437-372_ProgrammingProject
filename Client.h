@@ -29,6 +29,8 @@ class Client {
         void SetName(string n);
         void SetAddress(string a);
         void SetSalesToDate(int s);
+
+        void AddClient();
         
         static void InitializeDatabase();
         static void LoadClients();
