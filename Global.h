@@ -42,6 +42,26 @@ class Global {
             while (it != s.end() && std::isdigit(*it)) ++it;
             return !s.empty() && it == s.end();
         }
+
+        static void EraseLineFromFile(string path, string eraseLine) {
+            string line;
+            ifstream fin;
+
+            fin.open(path);
+            std::ofstream temp;
+            temp.open("temp.txt");
+
+            while (getline(fin, line)) {
+                if (line != eraseLine)
+                    temp << line << endl;
+            }
+
+            temp.close();
+            fin.close();
+            const char* p = path.c_str();
+            remove(p);
+            rename("temp.txt", p);
+        }
         
 };
 

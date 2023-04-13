@@ -30,14 +30,19 @@ int main(int argc, char** argv) {
 
     Client::InitializeDatabase();
 
-    Client c = Client();
-    c.SetName("Felix Crystal");
-    c.SetAddress("123 MyStreet");
-    c.SetSalesToDate(41);
+    /*Client c1 = Client();
+    c1.SetName("Felix Crystal");
+    c1.SetAddress("1234 MyStreet Dr, Test City, TX, 12345");
+    c1.SetSalesToDate(81);
+    c1.AddClient();*/
 
-    c.AddClient();
-    Client::LoadClients();
-    Client::PrintClientList();
+
+    /*Client::LoadClients();
+    Client c = Client::LoadSingleClient("Felix Crystal");
+    cout << c.GetAddress();
+
+    c.SetSalesToDate(82);
+    c.SaveClientUpdates();*/
 
 
     cout << endl << endl; // Adding some buffer to end out program output.

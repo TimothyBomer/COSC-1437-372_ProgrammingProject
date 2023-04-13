@@ -22,8 +22,8 @@ Requirements:
   - - ~~List all your current clients -- name, short address & sales to date~~
   - - ~~List all information for a specific client~~
   - - ~~Add a new client~~
-  - - Update client information
-  - - Save updated client information to file
+  - - ~~Update client information~~
+  - - ~~Save updated client information to file~~
   
   - **Sales Representatives**
   - - Read salesRep information from a file

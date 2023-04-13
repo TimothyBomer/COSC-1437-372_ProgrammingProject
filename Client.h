@@ -29,13 +29,18 @@ class Client {
         void SetName(string n);
         void SetAddress(string a);
         void SetSalesToDate(int s);
+        string GetName();
+        string GetAddress();
+        int GetSalesToDate();
 
         void AddClient();
+        void SaveClientUpdates();
         
         static void InitializeDatabase();
         static void LoadClients();
         static void PrintClientList();
         static void PrintSingleClient(string pName);
+        static Client LoadSingleClient(string pName);
         static Client BuildFromString(string s);
 
         // [TBomer] Constants. This holds the location of the Clients.db file
@@ -48,6 +53,9 @@ class Client {
         string Address;
         int SalesToDate;
         static bool isDBInitialized;
+        string dbString;
 
+        void SetDBString(string s);
+        string GetDBString();
 
 };

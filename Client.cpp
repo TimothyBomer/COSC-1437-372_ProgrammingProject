@@ -38,6 +38,26 @@ void Client::SetSalesToDate(int s) {
     SalesToDate = s;
 }
 
+string Client::GetName() {
+    return Name;
+}
+
+string Client::GetAddress() {
+    return Address;
+}
+
+int Client::GetSalesToDate() {
+    return SalesToDate;
+}
+
+void Client::SetDBString(string dbStr) {
+    dbString = dbStr;
+}
+
+string Client::GetDBString() {
+    return dbString;
+}
+
 Client Client::BuildFromString(string Line) {
     const string delimeter = "\t";
     size_t pos = 0;
@@ -101,6 +121,35 @@ void Client::AddClient() {
     }
 }
 
+void Client::SaveClientUpdates() {
+    string tempGlobal = Global::CURRENT_DIR;
+    string DatabaseDirectory = tempGlobal.append("\Database");
+    string dbTemp = DatabaseDirectory;
+    string ClientDatabase = dbTemp.append("\\").append(CLIENT_FILE);
+
+    bool ClientFound = false;
+
+    ifstream _clientDB(ClientDatabase);
+    string line;
+    if (_clientDB.is_open()) {
+        while (getline(_clientDB, line)) {
+            Client c = Client::BuildFromString(line);
+            if (c.Name == Name) {
+                ClientFound = true;
+                break;
+            }
+        }
+        _clientDB.close();
+        Global::EraseLineFromFile(ClientDatabase, line);
+        AddClient();
+    }
+    else {
+        cout << "Unable to open client database.";
+    } 
+}
+
+
+
 
 
 void Client::InitializeDatabase() {
@@ -158,6 +207,18 @@ void Client::PrintSingleClient(string pName) {
             cout << left << setw(35) << Client::clients[i].Address;
         }
     }
+}
+
+Client Client::LoadSingleClient(string pName) {
+    Client c = Client();
+    for (unsigned int i = 0; i < Client::clients.size(); i++) {
+        if (Client::clients[i].Name == pName) {            
+            c.SetName(Client::clients[i].Name);
+            c.SetAddress(Client::clients[i].Address);
+            c.SetSalesToDate(Client::clients[i].SalesToDate);
+        }
+    }
+    return c;
 }
 
 void Client::PrintClientList() {
