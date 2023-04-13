@@ -33,6 +33,7 @@ class Client {
         static void InitializeDatabase();
         static void LoadClients();
         static void PrintClientList();
+        static void PrintSingleClient(string pName);
         static Client BuildFromString(string s);
 
         // [TBomer] Constants. This holds the location of the Clients.db file

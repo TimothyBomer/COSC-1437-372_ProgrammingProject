@@ -104,6 +104,25 @@ void Client::LoadClients() {
     }
 }
 
+void Client::PrintSingleClient(string pName) {
+    cout << "===== Arbor Eight | Customer: " << pName << " =====" << endl << endl;
+    cout << left << setw(21) << "Name";
+    cout << left << setw(16) << "Sales to Date";
+    cout << left << setw(30) << "Address" << endl;
+    cout << setw(64) << setfill('-') << "" << setfill(' ');
+    cout << endl;
+
+    for (unsigned int i = 0; i < Client::clients.size(); i++) {
+        if (Client::clients[i].Name == pName) {
+            cout << left << setw(18) << Client::clients[i].Name;
+            cout << " | ";
+            cout << right << setw(13) << Client::clients[i].SalesToDate;
+            cout << " | ";
+            cout << left << setw(35) << Client::clients[i].Address;
+        }
+    }
+}
+
 void Client::PrintClientList() {
     cout << "===== Arbor Eight, Client List =====" << endl << endl;
     cout << left << setw(21) << "Name";

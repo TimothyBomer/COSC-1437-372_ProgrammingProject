@@ -20,7 +20,7 @@ Requirements:
   - **Client Information**
   - - ~~Read client information from a file~~
   - - ~~List all your current clients -- name, short address & sales to date~~
-  - - List all information for a specific client
+  - - ~~List all information for a specific client~~
   - - Add a new client
   - - Update client information
   - - Save updated client information to file

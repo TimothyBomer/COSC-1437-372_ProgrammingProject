@@ -30,7 +30,7 @@ int main(int argc, char** argv) {
 
     Client::InitializeDatabase();
     Client::LoadClients();
-    Client::PrintClientList();
+    Client::PrintSingleClient("Julian Cummings");
 
 
     cout << endl << endl; // Adding some buffer to end out program output.
