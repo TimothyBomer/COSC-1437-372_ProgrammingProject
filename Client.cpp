@@ -78,7 +78,7 @@ void Client::InitializeDatabase() {
         CreateDirectory(sw, NULL);
         ofstream _clientDBCreate(ClientDatabase);
         _clientDBCreate.close();
-    }
+    } 
 
     Client::isDBInitialized = true;
 }
