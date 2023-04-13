@@ -8,9 +8,9 @@ Details
 Assignments
 - Test Program: TBomer
 - ~~Customers/Clients~~: TBomer
-- Sales Reps: TBomer
+- ~~Sales Reps: TBomer~~
 - Product: JKantara
-- Sales: ALogan
+- ~~Sales: ALogan~~
 
 Requirements:
 1) ~~You own a company that produces products/services you sell to clients.~~
