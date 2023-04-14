@@ -374,6 +374,19 @@ double Sale::GetAnnualSales(int y) {
     return AnnualSales;
 }
 
+double Sale::GetAnnualSalesByRep(string c, int y) {
+    double AnnualSales = 0.00;
+    for (unsigned int i = 0; i < Sale::Sales.size(); i++) {
+
+        int saleYear = stoi(Sale::Sales[i].Date.substr(0, 8));
+
+        if (saleYear == y && Sale::Sales[i].SalesRepName == c) {
+            AnnualSales += Sale::Sales[i].SubTotal;
+        }
+    }
+    return AnnualSales;
+}
+
 void Sale::PrintSalesByProduct(string p) {
     cout << "===== Arbor Eight, Sales List =====" << endl << endl;
     cout << left << setw(15) << "Sale ID";

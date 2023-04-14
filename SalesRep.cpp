@@ -185,7 +185,7 @@ void SalesRep::SaveSalesRepUpdates() {
 }
 
 double SalesRep::CalculateBonus(double sales) {
-    double bonusPercentage = 0.05;
+    double bonusPercentage = 0.15;
     return sales * bonusPercentage;
 }
 

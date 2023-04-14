@@ -98,9 +98,52 @@ void HandleSelection_SalesRep(string s) {
         }
         enterPause(false);
     } else if (s == "4") {
+        string uName;
+        string uAddress;
+        string uPhone;
+        string uEmail;
+
+        cout << "Enter a sales rep's name to update: ";
+        cin.ignore();
+        getline(cin, userInput);
+        SalesRep sr = SalesRep::LoadSingleSalesRep(userInput);
+
+        cout << "Enter sales rep's new name: ";
+        getline(cin, uName);
+        cout << "Enter sales rep's new address: ";
+        getline(cin, uAddress);
+        cout << "Enter sales rep's new phone number: ";
+        getline(cin, uPhone);
+        cout << "Enter sales rep's new email: ";
+        getline(cin, uEmail);
+
+        cout << endl << endl << "Old Name: " << sr.GetName() << " | New Name: " << uName << endl;
+        cout << "Old Address: " << sr.GetAddress() << " | New Name: " << uAddress << endl;
+        cout << "Old Phone Number: " << sr.GetPhoneNumber() << " | New Name: " << uPhone << endl;
+        cout << "Old Email: " << sr.GetEmail() << " | New Name: " << uEmail << endl;
+
+        sr.SetName(uName);
+        sr.SetAddress(uAddress);
+        sr.SetPhoneNumber(uPhone);
+        sr.SetEmail(uEmail);
+        sr.SaveSalesRepUpdates();
+        SalesRep::LoadSalesReps();
+        enterPause(false);
 
     } else if (s == "5") {
+        cout << "Enter a sales rep's name to view bonus: ";
+        cin.ignore();
+        getline(cin, userInput);
 
+        SalesRep sr = SalesRep::LoadSingleSalesRep(userInput);
+        double totalSalesValue = Sale::GetAnnualSalesByRep(userInput, 2023);
+        double bonus = sr.CalculateBonus(totalSalesValue);
+
+        cout << userInput << " had a total of $" << totalSalesValue << " in sales in 2023." << endl;
+        cout << "Bonus is 15% of total sales." << endl << endl;
+
+        cout << "Bonus is $" << fixed << setprecision(2) << bonus << endl;
+        enterPause(false);
     }
 }
 
@@ -161,7 +204,7 @@ void HandleSelection_Client(string s) {
         cout << "Enter client's updated email: ";
         getline(cin, uEmail);
 
-        cout << "Old Name: " << c.GetName() << " | New Name: " << uName << endl;
+        cout << endl << endl << "Old Name: " << c.GetName() << " | New Name: " << uName << endl;
         cout << "Old Address: " << c.GetAddress() << " | New Name: " << uAddress << endl;
         cout << "Old Phone Number: " << c.GetPhoneNumber() << " | New Name: " << uNumber << endl;
         cout << "Old Email: " << c.GetEmail() << " | New Name: " << uEmail << endl;

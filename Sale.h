@@ -74,6 +74,7 @@ public:
     static double GetAnnualSales(int y);
     static void PrintSalesByProduct(string p);
     static void PrintSalesByCustomer(string c);
+    static double GetAnnualSalesByRep(string c, int y);
     static void PrintSalesBySalesRep(string sR);
     static void QuickAdd(string d, string cN, string sN, string pN, int q, double st);
 
