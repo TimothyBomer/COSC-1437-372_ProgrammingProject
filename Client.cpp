@@ -113,7 +113,8 @@ Client Client::BuildFromString(string Line) {
 }
 
 // [TBomer] Creates a new client.
-void Client::AddClient() {
+bool Client::AddClient() {
+    bool rVal = false;
     ofstream _clientDB(Client::CLIENT_DATABASE_PATH, ios::app);
     if (!_clientDB) {
         cout << "Unable to open client database.";
@@ -122,9 +123,9 @@ void Client::AddClient() {
             if (!Address.empty()) {
                 if (!PhoneNumber.empty()) {
                     if (!Email.empty()) {
-                        if (SalesToDate != NULL) {
+                        if (SalesToDate != NULL || SalesToDate == 0) {
                             _clientDB << Name << "\t" << Address << "\t" << PhoneNumber << "\t" << Email << "\t" << SalesToDate << "\n";
-                            //cout << "Client added." << endl;
+                            rVal = true;
                         } else {
                             cout << "Error adding client: Sales to Date is NULL." << endl;
                         }
@@ -140,19 +141,19 @@ void Client::AddClient() {
         } else {
             cout << "Error adding client: Name is empty." << endl;
         }
-        
         _clientDB.close();
     }
+    return rVal;
 }
 
-void Client::QuickAdd(string n, string a, int s, string pN, string e) {
+bool Client::QuickAdd(string n, string a, int s, string pN, string e) {
     Client c = Client();
     c.SetName(n);
     c.SetAddress(a);
     c.SetSalesToDate(s);
     c.SetPhoneNumber(pN);
     c.SetEmail(e);
-    c.AddClient();
+    return c.AddClient();
 }
 
 // [TBomer] Update DB to use most recent client data.
