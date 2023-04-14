@@ -33,6 +33,115 @@ void enterPause(bool ignore = true) {
     cin.get();
 }
 
+void PrintMenu_Products() {
+    system("cls");
+    cout << "===== Arbor Eight | Products Menu =====" << endl << endl;
+    cout << setw(32) << setfill('+') << "" << setfill(' ') << endl;
+    cout << "0) Back to Main Menu" << endl;
+    cout << "1) View All Products & Services" << endl;
+    cout << "2) View Specific Product or Service" << endl;
+    cout << "3) Add New Product or Service" << endl;
+    cout << "4) Update Product or Service" << endl;
+    cout << "5) View Monthly Sales Report" << endl << endl;
+    cout << setw(32) << setfill('+') << "" << setfill(' ') << endl;
+}
+
+void HandleSelection_Products(string s) {
+    system("cls");
+    string userInput = "";
+    if (s == "1") {
+        Product::PrintProductList();
+        cout << endl << endl << endl << endl;
+        Sale::PrintSaleList();
+        enterPause();
+    }
+    else if (s == "2") {
+        cout << "Enter a product name: ";
+        cin.ignore();
+        getline(cin, userInput);
+        system("cls");
+        Product::PrintSingleProduct(userInput);
+        cout << endl << endl << endl << endl;
+        Sale::PrintSalesByProduct(userInput);
+        enterPause(false);
+    }
+    else if (s == "3") {
+        string nName;
+        string nAddress;
+        string nPhone;
+        string nEmail;
+
+        cout << "Enter new sales rep's name: ";
+        cin.ignore();
+        getline(cin, nName);
+        cout << "Enter new sales rep's address: ";
+        getline(cin, nAddress);
+        cout << "Enter new sales rep's phone number: ";
+        getline(cin, nPhone);
+        cout << "Enter new sales rep's email: ";
+        getline(cin, nEmail);
+
+        SalesRep sr = SalesRep();
+        if (sr.QuickAdd(nName, nAddress, nPhone, nEmail, 0)) {
+            cout << endl << nName << " has been added as a sales rep." << endl;
+            SalesRep::LoadSalesReps();
+        }
+        else {
+            cout << endl << "Error adding " << nName << " as a sales rep." << endl;
+        }
+        enterPause(false);
+    }
+    else if (s == "4") {
+        string uName;
+        string uAddress;
+        string uPhone;
+        string uEmail;
+
+        cout << "Enter a sales rep's name to update: ";
+        cin.ignore();
+        getline(cin, userInput);
+        SalesRep sr = SalesRep::LoadSingleSalesRep(userInput);
+
+        cout << "Enter sales rep's new name: ";
+        getline(cin, uName);
+        cout << "Enter sales rep's new address: ";
+        getline(cin, uAddress);
+        cout << "Enter sales rep's new phone number: ";
+        getline(cin, uPhone);
+        cout << "Enter sales rep's new email: ";
+        getline(cin, uEmail);
+
+        cout << endl << endl << "Old Name: " << sr.GetName() << " | New Name: " << uName << endl;
+        cout << "Old Address: " << sr.GetAddress() << " | New Name: " << uAddress << endl;
+        cout << "Old Phone Number: " << sr.GetPhoneNumber() << " | New Name: " << uPhone << endl;
+        cout << "Old Email: " << sr.GetEmail() << " | New Name: " << uEmail << endl;
+
+        sr.SetName(uName);
+        sr.SetAddress(uAddress);
+        sr.SetPhoneNumber(uPhone);
+        sr.SetEmail(uEmail);
+        sr.SaveSalesRepUpdates();
+        SalesRep::LoadSalesReps();
+        enterPause(false);
+
+    }
+    else if (s == "5") {
+        cout << "Enter a sales rep's name to view bonus: ";
+        cin.ignore();
+        getline(cin, userInput);
+
+        SalesRep sr = SalesRep::LoadSingleSalesRep(userInput);
+        double totalSalesValue = Sale::GetAnnualSalesByRep(userInput, 2023);
+        double bonus = sr.CalculateBonus(totalSalesValue);
+
+        cout << userInput << " had a total of $" << totalSalesValue << " in sales in 2023." << endl;
+        cout << "Bonus is 15% of total sales." << endl << endl;
+
+        cout << "Bonus is $" << fixed << setprecision(2) << bonus << endl;
+        enterPause(false);
+    }
+}
+
 void PrintMenu_Client() {
     system("cls");
     cout << "===== Arbor Eight | Client Menu =====" << endl << endl;
@@ -252,6 +361,14 @@ void HandleSelection_Main(string s) {
             }
             if (userInput == "0") { break; }
             HandleSelection_SalesRep(userInput);
+        } else if (s == "3") {
+            PrintMenu_Products();
+            while (userInput != "0" && userInput != "1" && userInput != "2" && userInput != "3" && userInput != "4" && userInput != "5") {
+                cout << "Please select an option: ";
+                cin >> userInput;
+            }
+            if (userInput == "0") { break; }
+            HandleSelection_Products(userInput);
         }
     }
 }

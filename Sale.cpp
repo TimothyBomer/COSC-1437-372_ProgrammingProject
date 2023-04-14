@@ -13,6 +13,7 @@
         TBomer          03/26/2023      Initial creation.
 ------------------------------------------------------------------- */
 #include "Sale.h"
+#include <time.h>
 
 // [TBomer] Initialize static properties
 const string Sale::SALES_FILE = "Sales.db";
@@ -97,7 +98,7 @@ string Sale::GetDBString() {
 }
 
 void Sale::GenerateSaleID() {
-    srand((unsigned)time(NULL));
+    srand(rand());
     SaleID = 10000000 + (rand() % 10000001);
 }
 
