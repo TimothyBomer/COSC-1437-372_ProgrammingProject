@@ -70,6 +70,7 @@ public:
     static void PrintSingleSale(int SaleID);
     static Sale LoadSingleSale(int SaleID);
     static Sale BuildFromString(string s);
+    static void PrintMonthlyReport(int y, int d);
 
     static double GetAnnualSales(int y);
     static void PrintSalesByProduct(string p);

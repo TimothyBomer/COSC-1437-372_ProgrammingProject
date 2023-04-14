@@ -67,77 +67,77 @@ void HandleSelection_Products(string s) {
     }
     else if (s == "3") {
         string nName;
-        string nAddress;
-        string nPhone;
-        string nEmail;
+        string nDesc;
+        double nPrice;
+        int nStock;
 
-        cout << "Enter new sales rep's name: ";
+        cout << "Enter new product's name: ";
         cin.ignore();
         getline(cin, nName);
-        cout << "Enter new sales rep's address: ";
-        getline(cin, nAddress);
-        cout << "Enter new sales rep's phone number: ";
-        getline(cin, nPhone);
-        cout << "Enter new sales rep's email: ";
-        getline(cin, nEmail);
+        cout << "Enter new product's description: ";
+        getline(cin, nDesc);
+        cout << "Enter new product's price: ";
+        cin >> nPrice;
+        cout << "Enter new product's stock: ";
+        cin >> nStock;
 
-        SalesRep sr = SalesRep();
-        if (sr.QuickAdd(nName, nAddress, nPhone, nEmail, 0)) {
-            cout << endl << nName << " has been added as a sales rep." << endl;
-            SalesRep::LoadSalesReps();
+        Product p = Product();
+        if (p.QuickAdd(nName, nDesc, nPrice, nStock)) {
+            cout << endl << nName << " has been added as a product." << endl;
+            Product::LoadProducts();
         }
         else {
-            cout << endl << "Error adding " << nName << " as a sales rep." << endl;
+            cout << endl << "Error adding " << nName << " as a product." << endl;
         }
         enterPause(false);
     }
     else if (s == "4") {
         string uName;
-        string uAddress;
-        string uPhone;
-        string uEmail;
+        string uDesc;
+        double uPrice;
+        int uStock;
 
-        cout << "Enter a sales rep's name to update: ";
+        cout << "Enter a product's name to update: ";
         cin.ignore();
         getline(cin, userInput);
-        SalesRep sr = SalesRep::LoadSingleSalesRep(userInput);
+        Product p = Product::LoadSingleProduct(userInput);
 
-        cout << "Enter sales rep's new name: ";
+        cout << "Enter product's new name: ";
         getline(cin, uName);
-        cout << "Enter sales rep's new address: ";
-        getline(cin, uAddress);
-        cout << "Enter sales rep's new phone number: ";
-        getline(cin, uPhone);
-        cout << "Enter sales rep's new email: ";
-        getline(cin, uEmail);
+        cout << "Enter product's new description: ";
+        getline(cin, uDesc);
+        cout << "Enter product's new price: ";
+        cin >> uPrice;
+        cout << "Enter product's new stock: ";
+        cin >> uStock;
 
-        cout << endl << endl << "Old Name: " << sr.GetName() << " | New Name: " << uName << endl;
-        cout << "Old Address: " << sr.GetAddress() << " | New Name: " << uAddress << endl;
-        cout << "Old Phone Number: " << sr.GetPhoneNumber() << " | New Name: " << uPhone << endl;
-        cout << "Old Email: " << sr.GetEmail() << " | New Name: " << uEmail << endl;
+        cout << endl << endl << "Old Name: " << p.GetName() << " | New Name: " << uName << endl;
+        cout << "Old Description: " << p.GetDescription() << " | New Description: " << uDesc << endl;
+        cout << fixed << setprecision(2) << "Old Price: $" << p.GetPrice() << " | New Price: $" << uPrice << endl;
+        cout << "Old Stock: " << p.GetStock() << " | New Stock: " << uStock << endl;
 
-        sr.SetName(uName);
-        sr.SetAddress(uAddress);
-        sr.SetPhoneNumber(uPhone);
-        sr.SetEmail(uEmail);
-        sr.SaveSalesRepUpdates();
-        SalesRep::LoadSalesReps();
+        p.SetName(uName);
+        p.SetDescription(uDesc);
+        p.SetPrice(uPrice);
+        p.SetStock(uStock);
+        p.SaveProductUpdates();
+
+        Product::LoadProducts();
         enterPause(false);
 
     }
     else if (s == "5") {
-        cout << "Enter a sales rep's name to view bonus: ";
+        int year;
+        int month;
+
+        cout << "Enter the sales report year: ";
+        cin >> year;
+        cout << "Enter the sales report month:";
+        cin >> month;
         cin.ignore();
-        getline(cin, userInput);
+        system("cls");
+        Sale::PrintMonthlyReport(year, month);
 
-        SalesRep sr = SalesRep::LoadSingleSalesRep(userInput);
-        double totalSalesValue = Sale::GetAnnualSalesByRep(userInput, 2023);
-        double bonus = sr.CalculateBonus(totalSalesValue);
-
-        cout << userInput << " had a total of $" << totalSalesValue << " in sales in 2023." << endl;
-        cout << "Bonus is 15% of total sales." << endl << endl;
-
-        cout << "Bonus is $" << fixed << setprecision(2) << bonus << endl;
         enterPause(false);
     }
 }

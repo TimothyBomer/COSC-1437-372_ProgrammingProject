@@ -43,7 +43,7 @@ class Product {
         int GetStock();
 
         // [TBomer] Mutators
-        void AddProduct();
+        bool AddProduct();
         void SaveProductUpdates();
 
         // [TBomer] Static Functions
@@ -53,7 +53,7 @@ class Product {
         static void PrintSingleProduct(string pName);
         static Product LoadSingleProduct(string pName);
         static Product BuildFromString(string s);
-        static void QuickAdd(string n, string d, double p, int s);
+        static bool QuickAdd(string n, string d, double p, int s);
 
         static vector<Product> Products; // [TBomer] This holds the list of Products. Populated by the LoadProducts() function call.
 

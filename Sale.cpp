@@ -498,3 +498,46 @@ void Sale::PrintSalesBySalesRep(string sR) {
         }
     }
 }
+
+void Sale::PrintMonthlyReport(int y, int m) {
+
+    cout << "===== Arbor Eight, Sales List =====" << endl << endl;
+    cout << left << setw(15) << "Sale ID";
+    cout << left << setw(21) << "Date of Sale";
+    cout << left << setw(21) << "Client";
+    cout << left << setw(21) << "Sales Rep";
+    cout << left << setw(21) << "Product";
+    cout << left << setw(12) << "Quantity";
+    cout << left << setw(9) << "Sub Total" << endl;
+    cout << setw(140) << setfill('-') << "" << setfill(' ');
+    cout << endl;
+
+    for (unsigned int i = 0; i < Sale::Sales.size(); i++) {
+
+        int saleYear = stoi(Sale::Sales[i].Date.substr(0, 8));
+        int saleMonth = stoi(Sale::Sales[i].Date.substr(5, 2));
+
+
+        if (saleYear == y && saleMonth == m) {
+            cout << left << setw(12) << Sale::Sales[i].SaleID;
+            cout << " | ";
+            cout << left << setw(18) << Sale::Sales[i].Date;
+            cout << " | ";
+            cout << right << setw(18) << Sale::Sales[i].ClientName;
+            cout << " | ";
+            cout << left << setw(18) << Sale::Sales[i].SalesRepName;
+            cout << " | ";
+            cout << left << setw(18) << Sale::Sales[i].ProductName;
+            cout << " | ";
+            cout << left << setw(9) << Sale::Sales[i].ProductQty;
+            cout << " | ";
+            string t = to_string(Sale::Sales[i].SubTotal);
+            t = "$" + t;
+            t.erase(t.find_last_not_of('0') + 1, string::npos);
+            cout << left << setw(6) << t;
+            if (i != Sale::Sales.size() - 1) {
+                cout << endl;
+            }
+        }
+    }
+}

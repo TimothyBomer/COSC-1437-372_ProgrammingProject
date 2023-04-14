@@ -110,7 +110,8 @@ Product Product::BuildFromString(string Line) {
 }
 
 // [TBomer] Creates a new Product.
-void Product::AddProduct() {
+bool Product::AddProduct() {
+    bool rV = false;
     ofstream _ProductDB(Product::PRODUCT_DATABASE_PATH, ios::app);
     if (!_ProductDB) {
         cout << "Unable to open Product database.";
@@ -121,6 +122,7 @@ void Product::AddProduct() {
                 if (Price != NULL) {
                     if (Stock != NULL) {
                         _ProductDB << Name << "\t" << Description << "\t" << Price << "\t" << Stock << "\n";
+                        rV = true;
                     } else {
                         cout << "Error adding Product: Stock is NULL." << endl;
                     }
@@ -139,15 +141,16 @@ void Product::AddProduct() {
 
         _ProductDB.close();
     }
+    return rV;
 }
 
-void Product::QuickAdd(string n, string d, double pr, int s) {
+bool Product::QuickAdd(string n, string d, double pr, int s) {
     Product p = Product();
     p.SetName(n);
     p.SetDescription(d);
     p.SetPrice(pr);
     p.SetStock(s);
-    p.AddProduct();
+    return p.AddProduct();
 }
 
 // [TBomer] Update DB to use most recent Product data.
@@ -214,17 +217,17 @@ void Product::LoadProducts() {
 void Product::PrintSingleProduct(string pName) {
     cout << "===== Arbor Eight | Product: " << pName << " =====" << endl << endl;
     cout << left << setw(21) << "Name";
-    cout << left << setw(28) << "Description";
+    cout << left << setw(40) << "Description";
     cout << left << setw(12) << "Price";
     cout << left << setw(12) << "Stock" << endl;
-    cout << setw(68) << setfill('-') << "" << setfill(' ');
+    cout << setw(80) << setfill('-') << "" << setfill(' ');
     cout << endl;
 
     for (unsigned int i = 0; i < Product::Products.size(); i++) {
         if (Product::Products[i].Name == pName) {
             cout << left << setw(18) << Product::Products[i].Name;
             cout << " | ";
-            cout << left << setw(25) << Product::Products[i].Description;
+            cout << left << setw(37) << Product::Products[i].Description;
             cout << " | ";
             cout << left << setw(9) << Product::Products[i].Price;
             cout << " | ";
@@ -251,17 +254,17 @@ Product Product::LoadSingleProduct(string pName) {
 void Product::PrintProductList() {
     cout << "===== Arbor Eight, Product List =====" << endl << endl;
     cout << left << setw(21) << "Name";
-    cout << left << setw(28) << "Description";
+    cout << left << setw(40) << "Description";
     cout << left << setw(12) << "Price";
     cout << left << setw(12) << "Stock" << endl;
-    cout << setw(68) << setfill('-') << "" << setfill(' ');
+    cout << setw(80) << setfill('-') << "" << setfill(' ');
 
     cout << endl;
 
     for (unsigned int i = 0; i < Product::Products.size(); i++) {
         cout << left << setw(18) << Product::Products[i].Name;
         cout << " | ";
-        cout << left << setw(25) << Product::Products[i].Description;
+        cout << left << setw(37) << Product::Products[i].Description;
         cout << " | ";
         cout << left << setw(9) << Product::Products[i].Price;
         cout << " | ";
