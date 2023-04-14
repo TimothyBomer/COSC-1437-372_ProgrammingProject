@@ -198,6 +198,18 @@ void Sale::AddSale() {
     }
 }
 
+void Sale::QuickAdd(string d, string cN, string sN, string pN, int q, double st) {
+    Sale s = Sale();
+    s.GenerateSaleID();
+    s.SetDate(d);
+    s.SetClientName(cN);
+    s.SetSalesRepName(sN);
+    s.SetProductName(pN);
+    s.SetProductQty(q);
+    s.SetSubTotal(st);
+    s.AddSale();
+}
+
 // [TBomer] Update DB to use most recent Sale data.
 //              removes old entry and creates a new one.
 void Sale::SaveSaleUpdates() {

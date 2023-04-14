@@ -56,6 +56,7 @@ class SalesRep {
         static void PrintSingleSalesRep(string pName);
         static SalesRep LoadSingleSalesRep(string pName);
         static SalesRep BuildFromString(string s);
+        static void QuickAdd(string n, string a, string pN, string e, int s);
 
         static vector<SalesRep> salesReps; // [TBomer] This holds the list of sales reps. Populated by the LoadSalesRep() function call.
 

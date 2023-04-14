@@ -148,6 +148,16 @@ void SalesRep::AddSalesRep() {
     }
 }
 
+void SalesRep::QuickAdd(string n, string a, string pN, string e, int s) {
+    SalesRep sr = SalesRep();
+    sr.SetName(n);
+    sr.SetAddress(a);
+    sr.SetPhoneNumber(pN);
+    sr.SetEmail(e);
+    sr.SetSalesToDate(s);
+    sr.AddSalesRep();
+}
+
 // [TBomer] Update DB to use most recent sales rep data.
 //              removes old entry and creates a new one.
 void SalesRep::SaveSalesRepUpdates() {

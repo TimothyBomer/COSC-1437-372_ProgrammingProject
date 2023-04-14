@@ -141,6 +141,15 @@ void Product::AddProduct() {
     }
 }
 
+void Product::QuickAdd(string n, string d, double pr, int s) {
+    Product p = Product();
+    p.SetName(n);
+    p.SetDescription(d);
+    p.SetPrice(pr);
+    p.SetStock(s);
+    p.AddProduct();
+}
+
 // [TBomer] Update DB to use most recent Product data.
 //              removes old entry and creates a new one.
 void Product::SaveProductUpdates() {

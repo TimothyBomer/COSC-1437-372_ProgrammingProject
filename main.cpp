@@ -23,20 +23,49 @@
 #include "SalesRep.h"
 #include "Product.h"
 #include "Sale.h"
+#include "Test.h"
 
 using namespace std;
 
+void PrintMainMenu() {
+    cout << "===== Arbor Eight | Main Menu =====" << endl << endl;
+    cout << "1) Manage Clients" << endl;
+    cout << "2) Manage Sales Representatives" << endl;
+    cout << "3) Manage Products" << endl;
+    cout << "4) Manage Sales" << endl;
+
+
+
+
+
+    
+    //cout << left << setw(21) << "Name";
+}
 
 int main(int argc, char** argv) {
     Global::SetCurrentDirectory(argv);
 
-    Product::InitializeDatabase();
+    /*
+        [TBomer]
+            Test::PopulateDatabases() can be used to populate test data into the DBs.
+            If the DB files exist, nothing will happen. If they do not exist,
+            they will be created and popualted with data.
 
-    Product::LoadProducts();
+            You can disable individual databases by setting the property BEFORE
+            the PopulateDatabases call. They are all enabled by default.
 
-    Product p = Product::LoadSingleProduct("Hammer");
-    p.SetStock(39);
-    p.SaveProductUpdates();
+            Disable Client DB Population:       Test::populateClients = false;
+            Disable Product DB Population:      Test::populateProducts = false;
+            Disable Sales Rep DB Population:    Test::populateSalesReps = false;
+            Disable Sales DB Population:        Test::populateSales = false;
 
-    cout << endl << endl; // Adding some buffer to end out program output.
+    */
+
+    PrintMainMenu();
+
+    
+
+
+    // Adding extra padding at bottom
+    cout << endl << endl << endl << endl << endl << endl;
 }

@@ -66,6 +66,7 @@ class Client {
         static void PrintSingleClient(string pName);
         static Client LoadSingleClient(string pName);
         static Client BuildFromString(string s);
+        static void QuickAdd(string n, string a, int s, string pN, string e);
         
         static vector<Client> clients; // [TBomer] This holds the list of clients. Populated by the LoadClients() function call.
 

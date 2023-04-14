@@ -124,7 +124,7 @@ void Client::AddClient() {
                     if (!Email.empty()) {
                         if (SalesToDate != NULL) {
                             _clientDB << Name << "\t" << Address << "\t" << PhoneNumber << "\t" << Email << "\t" << SalesToDate << "\n";
-                            cout << "Client added." << endl;
+                            //cout << "Client added." << endl;
                         } else {
                             cout << "Error adding client: Sales to Date is NULL." << endl;
                         }
@@ -143,6 +143,16 @@ void Client::AddClient() {
         
         _clientDB.close();
     }
+}
+
+void Client::QuickAdd(string n, string a, int s, string pN, string e) {
+    Client c = Client();
+    c.SetName(n);
+    c.SetAddress(a);
+    c.SetSalesToDate(s);
+    c.SetPhoneNumber(pN);
+    c.SetEmail(e);
+    c.AddClient();
 }
 
 // [TBomer] Update DB to use most recent client data.
