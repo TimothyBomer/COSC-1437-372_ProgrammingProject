@@ -13,6 +13,7 @@
         TBomer          03/26/2023      Initial creation.
 ------------------------------------------------------------------- */
 #include <iostream>
+#include <ctime>
 #include <string>
 #include <fstream>
 #include "Client.h"
@@ -31,6 +32,135 @@ void enterPause(bool ignore = true) {
         cin.ignore();
     }
     cin.get();
+}
+
+void PrintMenu_Sales() {
+    system("cls");
+    cout << "===== Arbor Eight | Sales Menu =====" << endl << endl;
+    cout << setw(32) << setfill('+') << "" << setfill(' ') << endl;
+    cout << "0) Back to Main Menu" << endl;
+    cout << "1) Purchase Item" << endl;
+    cout << "2) Annual Sales Report" << endl;
+    cout << "3) Annual Sales Report - By Client" << endl;
+    cout << "4) Update Sale" << endl;
+    cout << setw(32) << setfill('+') << "" << setfill(' ') << endl;
+}
+
+void HandleSelection_Sales(string s) {
+    system("cls");
+    string userInput = "";
+    if (s == "1") {
+        string clientName = "";
+        cout << "Enter client name: ";
+        cin.ignore();
+        getline(cin, clientName);
+        system("cls");
+        Product::PrintProductList();
+
+        string nDate;
+        string nClient;
+        string nRep;
+        string nProduct;
+        int nQty;
+
+        // Global::GetFormattedDate();
+
+        Sale s = Sale();
+        //s.QuickAdd("date","client","rep", "product", 0, 0.00);
+
+        cout << endl << endl;
+        cout << "Please enter the name of the product you would like to purchase: ";
+        cin.ignore();
+
+
+
+        enterPause();
+    }
+    else if (s == "2") {
+        cout << "Enter a product name: ";
+        cin.ignore();
+        getline(cin, userInput);
+        system("cls");
+        Product::PrintSingleProduct(userInput);
+        cout << endl << endl << endl << endl;
+        Sale::PrintSalesByProduct(userInput);
+        enterPause(false);
+    }
+    else if (s == "3") {
+        string nName;
+        string nDesc;
+        double nPrice;
+        int nStock;
+
+        cout << "Enter new product's name: ";
+        cin.ignore();
+        getline(cin, nName);
+        cout << "Enter new product's description: ";
+        getline(cin, nDesc);
+        cout << "Enter new product's price: ";
+        cin >> nPrice;
+        cout << "Enter new product's stock: ";
+        cin >> nStock;
+
+        Product p = Product();
+        if (p.QuickAdd(nName, nDesc, nPrice, nStock)) {
+            cout << endl << nName << " has been added as a product." << endl;
+            Product::LoadProducts();
+        }
+        else {
+            cout << endl << "Error adding " << nName << " as a product." << endl;
+        }
+        enterPause(false);
+    }
+    else if (s == "4") {
+        string uName;
+        string uDesc;
+        double uPrice;
+        int uStock;
+
+        cout << "Enter a product's name to update: ";
+        cin.ignore();
+        getline(cin, userInput);
+        Product p = Product::LoadSingleProduct(userInput);
+
+        cout << "Enter product's new name: ";
+        getline(cin, uName);
+        cout << "Enter product's new description: ";
+        getline(cin, uDesc);
+        cout << "Enter product's new price: ";
+        cin >> uPrice;
+        cout << "Enter product's new stock: ";
+        cin >> uStock;
+
+        cout << endl << endl << "Old Name: " << p.GetName() << " | New Name: " << uName << endl;
+        cout << "Old Description: " << p.GetDescription() << " | New Description: " << uDesc << endl;
+        cout << fixed << setprecision(2) << "Old Price: $" << p.GetPrice() << " | New Price: $" << uPrice << endl;
+        cout << "Old Stock: " << p.GetStock() << " | New Stock: " << uStock << endl;
+
+        p.SetName(uName);
+        p.SetDescription(uDesc);
+        p.SetPrice(uPrice);
+        p.SetStock(uStock);
+        p.SaveProductUpdates();
+
+        Product::LoadProducts();
+        enterPause(false);
+
+    }
+    else if (s == "5") {
+        int year;
+        int month;
+
+        cout << "Enter the sales report year: ";
+        cin >> year;
+        cout << "Enter the sales report month:";
+        cin >> month;
+        cin.ignore();
+        system("cls");
+        Sale::PrintMonthlyReport(year, month);
+
+        enterPause(false);
+    }
 }
 
 void PrintMenu_Products() {
@@ -369,6 +499,14 @@ void HandleSelection_Main(string s) {
             }
             if (userInput == "0") { break; }
             HandleSelection_Products(userInput);
+        } else if (s == "4") {
+            PrintMenu_Sales();
+            while (userInput != "0" && userInput != "1" && userInput != "2" && userInput != "3" && userInput != "4") {
+                cout << "Please select an option: ";
+                cin >> userInput;
+            }
+            if (userInput == "0") { break; }
+            HandleSelection_Sales(userInput);
         }
     }
 }

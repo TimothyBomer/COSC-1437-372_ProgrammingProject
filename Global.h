@@ -19,6 +19,7 @@
                                             in IsStringNumber()
 ------------------------------------------------------------------- */
 #include <iostream>
+#include <ctime>
 #include <string>
 #include <fstream>
 using namespace std;
@@ -68,6 +69,27 @@ class Global {
             const char* p = path.c_str();
             remove(p);
             rename("temp.txt", p);
+        }
+
+        static inline tm localtime_xp(time_t timer) {
+            tm bt{};
+            #if defined(__unix__)
+                localtime_r(&timer, &bt);
+            #elif defined(_MSC_VER)
+                localtime_s(&bt, &timer);
+            #else
+                static mutex mtx;
+                lock_guard<mutex> lock(mtx);
+                bt = *localtime(&timer);
+            #endif
+            return bt;
+        }
+
+        // default = "YYYY-MM-DD HH:MM:SS"
+        static inline string GetFormattedDate(const string& fmt = "%Y/%m/%d") {
+            auto bt = localtime_xp(time(0));
+            char buf[64];
+            return { buf, strftime(buf, sizeof(buf), fmt.c_str(), &bt) };
         }
         
 };
