@@ -114,7 +114,8 @@ SalesRep SalesRep::BuildFromString(string Line) {
 }
 
 // [TBomer] Creates a new sales rep.
-void SalesRep::AddSalesRep() {
+bool SalesRep::AddSalesRep() {
+    bool rV = false;
     ofstream _salesRepDB(SalesRep::SALESREP_DATABASE_PATH, ios::app);
     if (!_salesRepDB) {
         cout << "Unable to open sales rep database.";
@@ -124,8 +125,9 @@ void SalesRep::AddSalesRep() {
             if (!Address.empty()) {
                 if (!PhoneNumber.empty()) {
                     if (!Email.empty()) {
-                        if (SalesToDate != NULL) {
+                        if (SalesToDate != NULL || SalesToDate == 0) {
                             _salesRepDB << Name << "\t" << Address << "\t" << PhoneNumber << "\t" << Email << "\t" << SalesToDate << "\n";
+                            rV = true;
                         } else {
                             cout << "Error adding sales rep: Sales to Date is NULL." << endl;
                         }
@@ -146,16 +148,17 @@ void SalesRep::AddSalesRep() {
 
         _salesRepDB.close();
     }
+    return rV;
 }
 
-void SalesRep::QuickAdd(string n, string a, string pN, string e, int s) {
+bool SalesRep::QuickAdd(string n, string a, string pN, string e, int s) {
     SalesRep sr = SalesRep();
     sr.SetName(n);
     sr.SetAddress(a);
     sr.SetPhoneNumber(pN);
     sr.SetEmail(e);
     sr.SetSalesToDate(s);
-    sr.AddSalesRep();
+    return sr.AddSalesRep();
 }
 
 // [TBomer] Update DB to use most recent sales rep data.
@@ -208,6 +211,7 @@ void SalesRep::InitializeDatabase() {
 
 // [TBomer] Populates the sales rep array from DB.
 void SalesRep::LoadSalesReps() {
+    SalesRep::salesReps.clear();
     ifstream _salesRepDB(SalesRep::SALESREP_DATABASE_PATH);
     string line;
     if (_salesRepDB.is_open()) {

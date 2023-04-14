@@ -201,6 +201,7 @@ void Client::InitializeDatabase() {
 
 // [TBomer] Populates the clients array from DB.
 void Client::LoadClients() {
+    Client::clients.clear();
     ifstream _clientDB(Client::CLIENT_DATABASE_PATH);
     string line;
     if (_clientDB.is_open()) {

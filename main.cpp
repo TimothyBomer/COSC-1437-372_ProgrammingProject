@@ -45,6 +45,65 @@ void PrintMenu_Client() {
     cout << setw(32) << setfill('+') << "" << setfill(' ') << endl;
 }
 
+void PrintMenu_SalesRep() {
+    system("cls");
+    cout << "===== Arbor Eight | Sales Rep Menu =====" << endl << endl;
+    cout << setw(32) << setfill('+') << "" << setfill(' ') << endl;
+    cout << "0) Back to Main Menu" << endl;
+    cout << "1) View All Sales Reps" << endl;
+    cout << "2) View Specific Sales Rep" << endl;
+    cout << "3) Add New Sales Rep" << endl;
+    cout << "4) Update Sales Rep" << endl;
+    cout << "5) View Sales Bonus" << endl << endl;
+    cout << setw(32) << setfill('+') << "" << setfill(' ') << endl;
+}
+
+void HandleSelection_SalesRep(string s) {
+    system("cls");
+    string userInput = "";
+    if (s == "1") {
+        SalesRep::PrintSalesRepList();
+        enterPause();
+    } else if (s == "2") {
+        cout << "Enter a sales rep's name: ";
+        cin.ignore();
+        getline(cin, userInput);
+        system("cls");
+        SalesRep::PrintSingleSalesRep(userInput);
+        cout << endl << endl << endl << endl;
+        Sale::PrintSalesBySalesRep(userInput);
+        enterPause(false);
+    } else if (s == "3") {
+        string nName;
+        string nAddress;
+        string nPhone;
+        string nEmail;
+
+        cout << "Enter new sales rep's name: ";
+        cin.ignore();
+        getline(cin, nName);
+        cout << "Enter new sales rep's address: ";
+        getline(cin, nAddress);
+        cout << "Enter new sales rep's phone number: ";
+        getline(cin, nPhone);
+        cout << "Enter new sales rep's email: ";
+        getline(cin, nEmail);
+
+        SalesRep sr = SalesRep();
+        if (sr.QuickAdd(nName, nAddress, nPhone, nEmail, 0)) {
+            cout << endl << nName << " has been added as a sales rep." << endl;
+            SalesRep::LoadSalesReps();
+        } else {
+            cout << endl << "Error adding " << nName << " as a sales rep." << endl;
+        }
+        enterPause(false);
+    } else if (s == "4") {
+
+    } else if (s == "5") {
+
+    }
+}
+
 void HandleSelection_Client(string s) {
     system("cls");
     string userInput = "";
@@ -76,6 +135,7 @@ void HandleSelection_Client(string s) {
         Client c = Client();
         if (c.QuickAdd(nName, nAddress, 0, nNumber, nEmail)) {
             cout << endl << nName << " has been added as a client." << endl;
+            Client::LoadClients();
         }
         else {
             cout << endl << "Error adding " << nName << " as a client." << endl;
@@ -111,7 +171,7 @@ void HandleSelection_Client(string s) {
         c.SetPhoneNumber(uNumber);
         c.SetEmail(uEmail);
         c.SaveClientUpdates();
-
+        Client::LoadClients();
         enterPause(false);
     }
 }
@@ -129,16 +189,27 @@ void PrintMenu_Main() {
 }
 
 void HandleSelection_Main(string s) {
-    string userInput = "";
-    if (s == "0") {
-        ApplicationRunning = false;
-    } else if (s == "1") {
-        PrintMenu_Client();
-        while (userInput != "0" && userInput != "1" && userInput != "2" && userInput != "3" && userInput != "4") {
-            cout << "Please select an option: ";
-            cin >> userInput;
+    while (ApplicationRunning) {
+        string userInput = "";
+        if (s == "0") {
+            ApplicationRunning = false;
+        } else if (s == "1") {
+            PrintMenu_Client();
+            while (userInput != "0" && userInput != "1" && userInput != "2" && userInput != "3" && userInput != "4") {
+                cout << "Please select an option: ";
+                cin >> userInput;
+            }
+            if (userInput == "0") { break; }
+            HandleSelection_Client(userInput);
+        } else if (s == "2") {
+            PrintMenu_SalesRep();
+            while (userInput != "0" && userInput != "1" && userInput != "2" && userInput != "3" && userInput != "4" && userInput != "5") {
+                cout << "Please select an option: ";
+                cin >> userInput;
+            }
+            if (userInput == "0") { break; }
+            HandleSelection_SalesRep(userInput);
         }
-        HandleSelection_Client(userInput);
     }
 }
 

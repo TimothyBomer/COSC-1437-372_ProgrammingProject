@@ -195,6 +195,7 @@ void Product::InitializeDatabase() {
 
 // [TBomer] Populates the Products array from DB.
 void Product::LoadProducts() {
+    Product::Products.clear();
     ifstream _ProductDB(Product::PRODUCT_DATABASE_PATH);
     string line;
     if (_ProductDB.is_open()) {

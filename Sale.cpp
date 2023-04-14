@@ -255,6 +255,7 @@ void Sale::InitializeDatabase() {
 
 // [TBomer] Populates the Sales array from DB.
 void Sale::LoadSales() {
+    Sale::Sales.clear();
     ifstream _SaleDB(Sale::SALES_DATABASE_PATH);
     string line;
     if (_SaleDB.is_open()) {

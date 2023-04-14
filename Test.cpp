@@ -58,10 +58,9 @@ void Test::PopulateDatabases() {
             Sale::QuickAdd("2023/04/13", "Robin Ferguson", "Bernadette Hill", "Hammer Set", 1, 14.99);
             Sale::QuickAdd("2021/04/13", "Ismael Morrison", "Bobbie Bryant", "Hammer Set", 1, 14.99);
             Sale::QuickAdd("2023/04/13", "Herman Gordon", "Elvira Sandoval", "Hammer Set", 1, 14.99);
-
             Sale::QuickAdd("2022/04/13", "Ollie Dean", "Otis Lowe", "Hammer Set", 1, 14.99);
             Sale::QuickAdd("2021/04/13", "Johnny Rios", "Faith Moss", "Hammer Set", 1, 14.99);
-            Sale::QuickAdd("2023/04/13", "Jesse Howard", "Terry Barberr", "Hammer Set", 1, 14.99);
+            Sale::QuickAdd("2023/04/13", "Jesse Howard", "Terry Barber", "Hammer Set", 1, 14.99);
             Sale::QuickAdd("2022/04/13", "Rosemarie Hubbard", "Rex Norris", "Hammer Set", 1, 14.99);
             Sale::QuickAdd("2022/04/13", "Marjorie Marsh", "Forrest Hammond", "Hammer Set", 1, 14.99);
 
