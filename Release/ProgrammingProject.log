@@ -1,0 +1,11 @@
+﻿  main.cpp
+D:\C++ Projects\School\ProgrammingFundamentalsII\ProgrammingProject\ProgrammingProject\ProgrammingProject\Client.h(33,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+D:\C++ Projects\School\ProgrammingFundamentalsII\ProgrammingProject\ProgrammingProject\ProgrammingProject\SalesRep.h(22,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+D:\C++ Projects\School\ProgrammingFundamentalsII\ProgrammingProject\ProgrammingProject\ProgrammingProject\Product.h(22,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+D:\C++ Projects\School\ProgrammingFundamentalsII\ProgrammingProject\ProgrammingProject\ProgrammingProject\Sale.h(22,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  Generating code
+  1 of 677 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    5 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  ProgrammingProject.vcxproj -> D:\C++ Projects\School\ProgrammingFundamentalsII\ProgrammingProject\ProgrammingProject\Release\ProgrammingProject.exe

@@ -57,94 +57,126 @@ void HandleSelection_Sales(string s) {
         system("cls");
         Product::PrintProductList();
 
-        string nDate;
-        string nClient;
+        string nDate = Global::GetFormattedDate();
         string nRep;
         string nProduct;
         int nQty;
 
-        // Global::GetFormattedDate();
-
         Sale s = Sale();
-        //s.QuickAdd("date","client","rep", "product", 0, 0.00);
+        
 
         cout << endl << endl;
         cout << "Please enter the name of the product you would like to purchase: ";
-        cin.ignore();
+        getline(cin, nProduct);
+        cout << "Please enter the amount of product you would like to purchase: ";
+        cin >> nQty;
+
+        Product p = Product::LoadSingleProduct(nProduct);
+
+        if (p.GetPrice() != NULL) {
+            if (p.GetStock() >= nQty) {
+                double calcCost = nQty * p.GetPrice();
+                if (s.QuickAdd(nDate, clientName, "Self Service", nProduct, nQty, calcCost)) {
+                    cout << clientName << " has purchased x" << nQty << " " << nProduct << " for $" << fixed << setprecision(2) << calcCost << "." << endl;
+                    p.SetStock(p.GetStock() - nQty);
+                    p.SaveProductUpdates();
+                    Sale::LoadSales();
+                    Product::LoadProducts();
+                    SalesRep sr = SalesRep::LoadSingleSalesRep("Self Service");
+                    sr.SetSalesToDate(sr.GetSalesToDate() + 1);
+                    sr.SaveSalesRepUpdates();
+                    SalesRep::LoadSalesReps();
+                    Client c = Client::LoadSingleClient(clientName);
+                    c.SetSalesToDate(c.GetSalesToDate() + 1);
+                    c.SaveClientUpdates();
+                    Client::LoadClients();
+                } else {
+                    cout << "Error purchasing product." << endl;
+                }
+            } else {
+                cout << "We do not have enough product for that purchase. Please lower the quantity." << endl;
+            }
+        } else {
+            cout << "Error finding product." << endl;
+            cout << "Product: " << nProduct << endl;
+        }
 
 
-
+        
         enterPause();
     }
     else if (s == "2") {
-        cout << "Enter a product name: ";
-        cin.ignore();
-        getline(cin, userInput);
-        system("cls");
-        Product::PrintSingleProduct(userInput);
-        cout << endl << endl << endl << endl;
-        Sale::PrintSalesByProduct(userInput);
-        enterPause(false);
+        Sale::PrintAnnualReport(2023);
+        enterPause();
     }
     else if (s == "3") {
-        string nName;
-        string nDesc;
-        double nPrice;
-        int nStock;
-
-        cout << "Enter new product's name: ";
+        string clientName = "";
+        cout << "Enter client name: ";
         cin.ignore();
-        getline(cin, nName);
-        cout << "Enter new product's description: ";
-        getline(cin, nDesc);
-        cout << "Enter new product's price: ";
-        cin >> nPrice;
-        cout << "Enter new product's stock: ";
-        cin >> nStock;
-
-        Product p = Product();
-        if (p.QuickAdd(nName, nDesc, nPrice, nStock)) {
-            cout << endl << nName << " has been added as a product." << endl;
-            Product::LoadProducts();
-        }
-        else {
-            cout << endl << "Error adding " << nName << " as a product." << endl;
-        }
-        enterPause(false);
+        getline(cin, clientName);
+        system("cls");
+        Sale::PrintAnnualReportByClient(2023, clientName);
+        enterPause();
     }
     else if (s == "4") {
-        string uName;
-        string uDesc;
-        double uPrice;
-        int uStock;
+        Sale::PrintSaleList();
+        cout << endl << endl << endl << endl;
 
-        cout << "Enter a product's name to update: ";
-        cin.ignore();
-        getline(cin, userInput);
-        Product p = Product::LoadSingleProduct(userInput);
+        int uSaleID;
+        string uDate;
+        string uClient;
+        string uRep;
+        string uProduct;
+        int uQty;
 
-        cout << "Enter product's new name: ";
-        getline(cin, uName);
-        cout << "Enter product's new description: ";
-        getline(cin, uDesc);
-        cout << "Enter product's new price: ";
-        cin >> uPrice;
-        cout << "Enter product's new stock: ";
-        cin >> uStock;
+        
 
-        cout << endl << endl << "Old Name: " << p.GetName() << " | New Name: " << uName << endl;
-        cout << "Old Description: " << p.GetDescription() << " | New Description: " << uDesc << endl;
-        cout << fixed << setprecision(2) << "Old Price: $" << p.GetPrice() << " | New Price: $" << uPrice << endl;
-        cout << "Old Stock: " << p.GetStock() << " | New Stock: " << uStock << endl;
+        cout << "Enter the ID of the sale you'd like to update: ";
+        cin >> uSaleID;
 
-        p.SetName(uName);
-        p.SetDescription(uDesc);
-        p.SetPrice(uPrice);
-        p.SetStock(uStock);
-        p.SaveProductUpdates();
+        Sale s = Sale::LoadSingleSale(uSaleID);
+        if (s.GetProductQty() != NULL) {
+            system("cls");
+            Sale::PrintSingleSale(uSaleID);
+            cout << endl << endl << endl << endl;
+            cin.clear();
+            cout << "Enter the new date: ";
+            cin >> uDate;
+            cout << "Enter the new client's name: ";
+            cin.ignore();
+            getline(cin, uClient);
+            cout << "Enter the new rep's name: ";
+            getline(cin, uRep);
+            system("cls");
+            Product::PrintProductList();
+            cout << endl << endl << endl << endl;
+            cout << "Enter the new product: ";
+            getline(cin, uProduct);
+            cout << "Enter the new quantity: ";
+            cin >> uQty;
+            Product p = Product::LoadSingleProduct(uProduct);
+            if (p.GetStock() != NULL) {
+                s.SetDate(uDate);
+                s.SetClientName(uClient);
+                s.SetSalesRepName(uRep);
+                s.SetProductName(p.GetName());
+                s.SetProductQty(uQty);
+                s.SetSubTotal(uQty * p.GetPrice());
 
-        Product::LoadProducts();
-        enterPause(false);
+                system("cls");
+                cout << "OLD DATA:" << endl << endl;
+                Sale::PrintSingleSale(uSaleID);
+                s.SaveSaleUpdates();
+                Sale::LoadSales();
+                cout << endl << endl << endl << endl;
+
+                cout << "NEW DATA:" << endl << endl;
+                Sale::PrintSingleSale(uSaleID);
+            } else {
+                cout << "Error looking up product: " << uProduct << "." << endl;
+            }
+        }
+        enterPause(true);
 
     }
     else if (s == "5") {
@@ -542,6 +574,7 @@ int main(int argc, char** argv) {
     */
 
     // [START] Program
+
     Test::PopulateDatabases();
     Initialize();
     while (ApplicationRunning) {
@@ -553,6 +586,8 @@ int main(int argc, char** argv) {
         }
         HandleSelection_Main(userInput);
     }
+
+
     
     // [END] Program
 

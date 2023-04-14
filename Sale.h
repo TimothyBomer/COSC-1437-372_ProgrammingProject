@@ -60,7 +60,7 @@ public:
 
     // [TBomer] Mutators
     void GenerateSaleID();
-    void AddSale();
+    bool AddSale();
     void SaveSaleUpdates();
 
     // [TBomer] Static Functions
@@ -71,13 +71,15 @@ public:
     static Sale LoadSingleSale(int SaleID);
     static Sale BuildFromString(string s);
     static void PrintMonthlyReport(int y, int d);
+    static void PrintAnnualReport(int y);
+    static void PrintAnnualReportByClient(int y, string c);
 
     static double GetAnnualSales(int y);
     static void PrintSalesByProduct(string p);
     static void PrintSalesByCustomer(string c);
     static double GetAnnualSalesByRep(string c, int y);
     static void PrintSalesBySalesRep(string sR);
-    static void QuickAdd(string d, string cN, string sN, string pN, int q, double st);
+    static bool QuickAdd(string d, string cN, string sN, string pN, int q, double st);
 
     static vector<Sale> Sales; // [TBomer] This holds the list of Sales. Populated by the LoadSales() function call.
 

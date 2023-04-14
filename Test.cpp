@@ -74,6 +74,7 @@ void Test::PopulateDatabases() {
         string Database = dbTemp.append("\\").append(SalesRep::SALESREP_FILE);
         if (!Global::file_exists(Database)) {
             SalesRep::InitializeDatabase();
+            SalesRep::QuickAdd("Self Service", "APPLICATION", "N/A", "support@arboreight.com", 0);
             SalesRep::QuickAdd("Carroll Gardner", "68 Rosewood St., Morristown, NJ 07960", "1234567890", "cgardner@arboreight.com", 100);
             SalesRep::QuickAdd("Frances Reid", "90 Hill Street, Somerset, NJ 08873", "1234567890", "freid@arboreight.com", 84);
             SalesRep::QuickAdd("Bernadette Hill", "672 North Bellevue St., Pleasanton, CA 94566", "1234567890", "bhill@arboreight.com", 171);

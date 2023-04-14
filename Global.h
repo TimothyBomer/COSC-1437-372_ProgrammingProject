@@ -32,9 +32,10 @@ class Global {
         static void SetCurrentDirectory(char** argv) {
             string directory = argv[0];
             directory.erase(directory.find_last_of('\\') + 1);
-            unsigned int start_position_to_erase = directory.find("Debug");
-            directory.erase(start_position_to_erase, 6);
-            Global::CURRENT_DIR = directory.append("ProgrammingProject\\");
+            //unsigned int start_position_to_erase = directory.find("Debug");
+            //directory.erase(start_position_to_erase, 6);
+            //Global::CURRENT_DIR = directory.append("ProgrammingProject\\");
+            Global::CURRENT_DIR = directory;
         }
 
         // [TBomer] Checks to see if a file exists.

@@ -120,7 +120,7 @@ bool Product::AddProduct() {
         if (!Name.empty()) {
             if (!Description.empty()) {
                 if (Price != NULL) {
-                    if (Stock != NULL) {
+                    if (Stock != NULL || Stock == 0) {
                         _ProductDB << Name << "\t" << Description << "\t" << Price << "\t" << Stock << "\n";
                         rV = true;
                     } else {
